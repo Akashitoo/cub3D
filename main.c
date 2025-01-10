@@ -79,7 +79,7 @@ int main(void)
 	height = 500;
 	width = 500;
 	mlx = mlx_init();
-	mlx_win = mlx_new_window(mlx, width, height, "Hello world!");
+	mlx_win = mlx_new_window(mlx, width, height, "cub3d");
 	frame.img = mlx_new_image(mlx, width, height);
 	frame.addr = mlx_get_data_addr(frame.img, &frame.bits_per_pixel, &frame.line_length, &frame.endian);
 	mlx_put_image_to_window(mlx, mlx_win, frame.img, 0, 0);

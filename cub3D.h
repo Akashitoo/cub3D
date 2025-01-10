@@ -23,4 +23,10 @@ typedef struct	s_frame {
 	int		endian;
 }				t_frame;
 
+typedef struct  s_player {
+
+    float pos_x;
+    float pos_y;
+}               t_player;
+
 #endif
