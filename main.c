@@ -50,10 +50,7 @@ void	draw_square(int x, int y, int size, int color, t_frame frame)
 		j = x;
 		while (j < x + size)
 		{
-			// if (j == x || i == y || j == x + size - 1|| i == y + size - 1)
-			// 	my_mlx_pixel_put(&frame, j, i, 0xff0000);
-			// else
-				my_mlx_pixel_put(&frame, j, i, color);
+			my_mlx_pixel_put(&frame, j, i, color);
 			j++;
 		}
 		i++;
@@ -109,16 +106,16 @@ int key_press(int keycode, t_vars *vars)
 	int pos_y;
 	int speed;
 
-	speed = 2;
+	speed = 1;
 	pos_x = vars->player->pos_x;
 	pos_y = vars->player->pos_y;
-	if (keycode == 119 && !checkCollision(vars, pos_x, pos_y - speed))
+	if (keycode == 119 && !checkCollision(vars, pos_x, pos_y - speed ))
 		vars->player->pos_y -= speed;
-	if (keycode == 115 && !checkCollision(vars, pos_x, pos_y + speed))
+	if (keycode == 115 && !checkCollision(vars, pos_x, pos_y + speed + 4))
 		vars->player->pos_y += speed;
 	if (keycode == 97 && !checkCollision(vars, pos_x - speed, pos_y))
 		vars->player->pos_x -= speed;
-	if (keycode == 100 && !checkCollision(vars, pos_x + speed, pos_y))
+	if (keycode == 100 && !checkCollision(vars, pos_x + speed + 4, pos_y))
 		vars->player->pos_x += speed;
 	displayFrame(*vars->player, vars->map, *vars->frame, *vars);
 	return (0);
@@ -142,8 +139,8 @@ int main(void)
 				       {1,0,1,0,0,0,0,0,0,1},
 				       {1,1,1,1,1,1,1,1,1,1}};
 
-	player.pos_x = 350;
-	player.pos_y = 350;
+	player.pos_x = 380;
+	player.pos_y = 380;
 
 	height = 500;
 	width = 500;
