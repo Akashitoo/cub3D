@@ -29,4 +29,12 @@ typedef struct  s_player {
     float pos_y;
 }               t_player;
 
+typedef struct	s_vars {
+	void		*mlx;
+	void		*win;
+	t_frame		*frame;
+	t_player	*player;
+	int			**map;
+}				t_vars;
+
 #endif
