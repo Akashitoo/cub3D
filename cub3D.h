@@ -25,11 +25,11 @@ typedef struct	s_frame {
 }				t_frame;
 
 typedef struct  s_player {
-
-    float pos_x;
-    float pos_y;
-	float dir[2];
-	float angle;
+	
+	double pos_x;
+    double pos_y;
+	double dir[2];
+	double angle;
 }               t_player;
 
 typedef struct	s_vars {
