@@ -26,33 +26,18 @@ void	draw_line(t_frame frame, int x0, int y0, int x1, int y1)
 	float slope;
 	int x;
 	float y;
-
+	if (x0 > x1)
+		draw_line(frame, x1 ,y1, x0 , y0);
 	slope = (float)(y1 - y0) / (float)(x1 - x0);
-	if (x1 > x0)
+	x = x0;
+	while (x <= x1)
 	{
-		x = x0;
-		while (x <= x1)
-		{
-			y = slope * (x - x0) + y0;
-			//printf("%d %d\n",x ,y);
-			my_mlx_pixel_put(&frame, x, y, 0xFF0000);
-			(void) frame;
-			x++;
-		}
+		y = slope * (x - x0) + y0;
+		//printf("%d %d\n",x ,y);
+		my_mlx_pixel_put(&frame, x, y, 0xFF0000);
+		(void) frame;
+		x++;
 	}
-	else
-	{
-		x = x1;
-		while (x >= x0)
-		{
-			y = slope * (x - x1) + y1;
-			//printf("%d %d\n",x ,y);
-			my_mlx_pixel_put(&frame, x, y, 0xFF0000);
-			(void) frame;
-			x--;
-		}
-	}
-
 }
 
 void	initMap(t_vars *vars, int map[10][10])
