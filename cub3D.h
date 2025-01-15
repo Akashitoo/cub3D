@@ -14,6 +14,7 @@
 
 # include "minilibx-linux/mlx.h"
 # include "libft/libft.h"
+# include <math.h>
 
 typedef struct	s_frame {
 	void	*img;
@@ -27,6 +28,8 @@ typedef struct  s_player {
 
     float pos_x;
     float pos_y;
+	float dir[2];
+	float angle;
 }               t_player;
 
 typedef struct	s_vars {

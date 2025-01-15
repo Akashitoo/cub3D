@@ -20,6 +20,41 @@ void	my_mlx_pixel_put(t_frame *data, int x, int y, int color)
 	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
 	*(unsigned int*)dst = color;
 }
+
+void	draw_line(t_frame frame, int x0, int y0, int x1, int y1)
+{
+	float slope;
+	int x;
+	float y;
+
+	slope = (float)(y1 - y0) / (float)(x1 - x0);
+	if (x1 > x0)
+	{
+		x = x0;
+		while (x <= x1)
+		{
+			y = slope * (x - x0) + y0;
+			//printf("%d %d\n",x ,y);
+			my_mlx_pixel_put(&frame, x, y, 0xFF0000);
+			(void) frame;
+			x++;
+		}
+	}
+	else
+	{
+		x = x1;
+		while (x >= x0)
+		{
+			y = slope * (x - x1) + y1;
+			//printf("%d %d\n",x ,y);
+			my_mlx_pixel_put(&frame, x, y, 0xFF0000);
+			(void) frame;
+			x--;
+		}
+	}
+
+}
+
 void	initMap(t_vars *vars, int map[10][10])
 {
 	int i;
@@ -86,15 +121,16 @@ void draw_map(int **map, int size, int color, t_frame frame)
 
 void displayFrame(t_player player, int **map, t_frame frame, t_vars vars)
 {
+	
 	draw_map(map, 10, 0xFFFFFF, frame);
 	draw_player(player, frame);
+	draw_line(frame, (int)player.pos_x, (int)player.pos_y, (int)player.pos_x + (int)player.dir[0], (int)player.pos_y + (int)player.dir[1]);
+	//draw_line(frame, (int)player.pos_x, (int)player.pos_y, (int)player.pos_x + 100, 0);
 	mlx_put_image_to_window(vars.mlx, vars.win, frame.img, 0, 0);
 }
 
 int checkCollision(t_vars *vars, float pos_x, float pos_y)
 {
-	printf("pos_x :%f pos_y:%f -> (int)pos_x : %d (int)pos_y : %d\n", pos_x, pos_y, (int)pos_x, (int)pos_y);
-
 	if (vars->map[(int)pos_y/50][(int)pos_x/50])
 		return (1);
 	return (0);
@@ -105,18 +141,31 @@ int key_press(int keycode, t_vars *vars)
 	int	pos_x;
 	int pos_y;
 	int speed;
+	float oldDir;
 
-	speed = 1;
+	speed = 4;
 	pos_x = vars->player->pos_x;
 	pos_y = vars->player->pos_y;
 	if (keycode == 119 && !checkCollision(vars, pos_x, pos_y - speed ))
 		vars->player->pos_y -= speed;
 	if (keycode == 115 && !checkCollision(vars, pos_x, pos_y + speed + 4))
 		vars->player->pos_y += speed;
-	if (keycode == 97 && !checkCollision(vars, pos_x - speed, pos_y))
-		vars->player->pos_x -= speed;
-	if (keycode == 100 && !checkCollision(vars, pos_x + speed + 4, pos_y))
-		vars->player->pos_x += speed;
+	if (keycode == 97)
+	{
+		//vars->player->pos_x -= speed;
+		vars->player->angle = -0.1;
+		oldDir = vars->player->dir[0];
+		vars->player->dir[0] = (vars->player->dir[0] * cos(vars->player->angle)) - (vars->player->dir[1] * sin(vars->player->angle));
+		vars->player->dir[1] = (oldDir * sin(vars->player->angle) + (vars->player->dir[1] * cos(vars->player->angle)));
+	}
+	if (keycode == 100)
+	{
+		//vars->player->pos_x += speed;
+		vars->player->angle = 0.1;
+		oldDir = vars->player->dir[0];
+		vars->player->dir[0] = (vars->player->dir[0] * cos(vars->player->angle)) - (vars->player->dir[1] * sin(vars->player->angle));
+		vars->player->dir[1] = (oldDir * sin(vars->player->angle) + (vars->player->dir[1] * cos(vars->player->angle)));
+	}
 	displayFrame(*vars->player, vars->map, *vars->frame, *vars);
 	return (0);
 }
@@ -141,6 +190,9 @@ int main(void)
 
 	player.pos_x = 380;
 	player.pos_y = 380;
+	player.dir[0] = 100;
+	player.dir[1] = 100;
+	player.angle = 45;
 
 	height = 500;
 	width = 500;

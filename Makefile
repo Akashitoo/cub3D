@@ -4,7 +4,7 @@ CC = cc
 
 CFLAGS = -Wall -Werror -Wextra -O3
 
-MLXFLAGS = -L ./minilibx-linux -lmlx -Ilmlx -lXext -lX11
+MLXFLAGS = -L ./minilibx-linux -lmlx -Ilmlx -lXext -lX11 -lm
 LIBFT = ./libft/libft.a
 
 SRC = main.c \
