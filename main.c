@@ -21,11 +21,11 @@ void	my_mlx_pixel_put(t_frame *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-void	draw_line(t_frame frame, int x0, int y0, int x1, int y1)
+void	draw_line(t_frame frame, double x0, double y0, double x1, double y1)
 {
-	float slope;
-	int x;
-	float y;
+	double slope;
+	double x;
+	double y;
 	if (x0 > x1)
 		draw_line(frame, x1 ,y1, x0 , y0);
 	slope = (float)(y1 - y0) / (float)(x1 - x0);
@@ -109,7 +109,7 @@ void displayFrame(t_player player, int **map, t_frame frame, t_vars vars)
 	
 	draw_map(map, 10, 0xFFFFFF, frame);
 	draw_player(player, frame);
-	draw_line(frame, (int)player.pos_x, (int)player.pos_y, (int)player.pos_x + ((int)player.dir[0] * 100), (int)player.pos_y + ((int)player.dir[1] * 100));
+	draw_line(frame, player.pos_x, player.pos_y, player.pos_x + player.dir[0] * 100, player.pos_y + player.dir[1] * 100);
 	//draw_line(frame, (int)player.pos_x, (int)player.pos_y, (int)player.pos_x + 100, 0);
 	printf("dirX : %f dirY : %f\n", vars.player->dir[0], vars.player->dir[1]);
 	mlx_put_image_to_window(vars.mlx, vars.win, frame.img, 0, 0);
@@ -137,13 +137,13 @@ int key_press(int keycode, t_vars *vars)
 	}
 	if (keycode == 115 && !checkCollision(vars, pos_x, pos_y))
 	{
-		vars->player->pos_x = pos_x - (vars->player->dir[0] * 3);
-		vars->player->pos_y = pos_y - (vars->player->dir[1] * 3);
+		vars->player->pos_x -= vars->player->dir[0] * 5;
+		vars->player->pos_y -= vars->player->dir[1] * 5;
 	}
 	if (keycode == 97)
 	{
 		//vars->player->pos_x -= speed;
-		vars->player->angle = -0.1;
+		vars->player->angle = -0.05;
 		oldDir = vars->player->dir[0];
 		vars->player->dir[0] = (vars->player->dir[0] * cosf(vars->player->angle)) - (vars->player->dir[1] * sinf(vars->player->angle));
 		vars->player->dir[1] = (oldDir * sinf(vars->player->angle) + (vars->player->dir[1] * cosf(vars->player->angle)));
@@ -151,7 +151,7 @@ int key_press(int keycode, t_vars *vars)
 	if (keycode == 100)
 	{
 		//vars->player->pos_x += speed;
-		vars->player->angle = 0.1;
+		vars->player->angle = 0.01;
 		oldDir = vars->player->dir[0];
 		vars->player->dir[0] = (vars->player->dir[0] * cosf(vars->player->angle)) - (vars->player->dir[1] * sinf(vars->player->angle));
 		vars->player->dir[1] = (oldDir * sinf(vars->player->angle) + (vars->player->dir[1] * cosf(vars->player->angle)));
