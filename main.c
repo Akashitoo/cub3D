@@ -8,7 +8,7 @@
 /*   Created: 2025/01/10 13:49:46 by abalasub          #+#    #+#             */
 /*   Updated: 2025/01/10 13:51:14 by abalasub         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/* ************************************************************************** */	
 
 #include "cub3D.h"
 #include <stdio.h>
@@ -21,19 +21,18 @@ void	my_mlx_pixel_put(t_frame *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-void	draw_line(t_frame frame, double x0, double y0, double x1, double y1)
+void	draw_line(int **map, t_frame frame, double x0, double y0, double x1, double y1)
 {
 	double slope;
 	double x;
 	double y;
 	if (x0 > x1)
-		draw_line(frame, x1 ,y1, x0 , y0);
-	slope = (float)(y1 - y0) / (float)(x1 - x0);
+		draw_line(map, frame, x1 ,y1, x0 , y0);
+	slope = (y1 - y0) / (x1 - x0);
 	x = x0;
 	while (x <= x1)
 	{
 		y = slope * (x - x0) + y0;
-		//printf("%d %d\n",x ,y);
 		my_mlx_pixel_put(&frame, x, y, 0xFF0000);
 		(void) frame;
 		x++;
@@ -109,7 +108,7 @@ void displayFrame(t_player player, int **map, t_frame frame, t_vars vars)
 	
 	draw_map(map, 10, 0xFFFFFF, frame);
 	draw_player(player, frame);
-	draw_line(frame, player.pos_x, player.pos_y, player.pos_x + player.dir[0] * 100, player.pos_y + player.dir[1] * 100);
+	draw_line(map, frame, player.pos_x, player.pos_y, player.pos_x + player.dir[0] * 100, player.pos_y + player.dir[1] * 100);
 	//draw_line(frame, (int)player.pos_x, (int)player.pos_y, (int)player.pos_x + 100, 0);
 	printf("dirX : %f dirY : %f\n", vars.player->dir[0], vars.player->dir[1]);
 	mlx_put_image_to_window(vars.mlx, vars.win, frame.img, 0, 0);
@@ -130,28 +129,26 @@ int key_press(int keycode, t_vars *vars)
 
 	pos_x = vars->player->pos_x;
 	pos_y = vars->player->pos_y;
-	if (keycode == 119 && !checkCollision(vars, pos_x, pos_y))
+	if (keycode == 119 && !checkCollision(vars, pos_x + vars->player->dir[0] * 5, pos_y + vars->player->dir[1] * 5))
 	{
 		vars->player->pos_x += vars->player->dir[0] * 5;
 		vars->player->pos_y +=vars->player->dir[1] * 5;
 	}
-	if (keycode == 115 && !checkCollision(vars, pos_x, pos_y))
+	if (keycode == 115 && !checkCollision(vars, pos_x - vars->player->dir[0] * 5, pos_y - vars->player->dir[1] * 5))
 	{
 		vars->player->pos_x -= vars->player->dir[0] * 5;
 		vars->player->pos_y -= vars->player->dir[1] * 5;
 	}
 	if (keycode == 97)
 	{
-		//vars->player->pos_x -= speed;
-		vars->player->angle = -0.05;
+		vars->player->angle = -0.1;
 		oldDir = vars->player->dir[0];
 		vars->player->dir[0] = (vars->player->dir[0] * cosf(vars->player->angle)) - (vars->player->dir[1] * sinf(vars->player->angle));
 		vars->player->dir[1] = (oldDir * sinf(vars->player->angle) + (vars->player->dir[1] * cosf(vars->player->angle)));
 	}
 	if (keycode == 100)
 	{
-		//vars->player->pos_x += speed;
-		vars->player->angle = 0.01;
+		vars->player->angle = 0.1;
 		oldDir = vars->player->dir[0];
 		vars->player->dir[0] = (vars->player->dir[0] * cosf(vars->player->angle)) - (vars->player->dir[1] * sinf(vars->player->angle));
 		vars->player->dir[1] = (oldDir * sinf(vars->player->angle) + (vars->player->dir[1] * cosf(vars->player->angle)));
@@ -182,7 +179,6 @@ int main(void)
 	player.pos_y = 380;
 	player.dir[0] = 1;
 	player.dir[1] = 1;
-	player.angle = 45;
 
 	height = 500;
 	width = 500;
