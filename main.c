@@ -49,6 +49,13 @@ void draw_line(int **map, t_frame frame, double x0, double y0, double x1, double
 	}
 	(void)map;
 }
+
+// void	calculateRay(t_frame frame, t_player player, int **map)
+// {
+// 	double deltaX;
+
+// }
+
 void	initMap(t_vars *vars, int map[10][10])
 {
 	int i;
@@ -68,6 +75,7 @@ void	initMap(t_vars *vars, int map[10][10])
 		i++;
 	}
 }
+
 void	draw_square(int x, int y, int size, int color, t_frame frame)
 {
 	int i;
@@ -79,7 +87,10 @@ void	draw_square(int x, int y, int size, int color, t_frame frame)
 		j = x;
 		while (j < x + size)
 		{
-			my_mlx_pixel_put(&frame, j, i, color);
+			if (i == y || i == y+size || j == x || j == x+size)
+				my_mlx_pixel_put(&frame,j, i, 0xAA0000);
+			else
+				my_mlx_pixel_put(&frame, j, i, color);
 			j++;
 		}
 		i++;
@@ -88,7 +99,7 @@ void	draw_square(int x, int y, int size, int color, t_frame frame)
 
 void draw_player(t_player player, t_frame frame)
 {
-	draw_square(player.pos_x , player.pos_y , 5,0x7ac417, frame);
+	draw_square((player.pos_x) * 50, (player.pos_y) * 50, 5,0x7ac417, frame);
 }
 
 void draw_map(int **map, int size, int color, t_frame frame)
@@ -119,42 +130,42 @@ void displayFrame(t_player player, int **map, t_frame frame, t_vars vars)
 	draw_map(map, 10, 0xFFFFFF, frame);
 	draw_player(player, frame);
 	// Desssine un rayon de ~100 pixels depuis le joueur 
-	draw_line(map, frame, player.pos_x, player.pos_y, player.pos_x + player.dir[0] * 100, player.pos_y + player.dir[1] * 100);
-	printf("dirX : %f dirY : %f\n", vars.player->dir[0], vars.player->dir[1]);
+	draw_line(map, frame, player.pos_x * 50, player.pos_y * 50, (player.pos_x * 50) + player.dir[0] * 200, (player.pos_y * 50) + player.dir[1] * 200);
+	//printf("dirX : %f dirY : %f\n", vars.player->dir[0], vars.player->dir[1]);
 	mlx_put_image_to_window(vars.mlx, vars.win, frame.img, 0, 0);
 }
 
-int checkCollision(t_vars *vars, float pos_x, float pos_y)
+int checkCollision(t_vars *vars, double pos_x, double pos_y)
 {
-	if (vars->map[(int)pos_y/50][(int)pos_x/50])
+	if (vars->map[(int)pos_y][(int)pos_x])
 		return (1);
 	return (0);
 }
 
 int key_press(int keycode, t_vars *vars)
 {
-	int	pos_x;
-	int pos_y;
-	float oldDir;
+	double	pos_x;
+	double 	pos_y;
+	double 	oldDir;
 
 	pos_x = vars->player->pos_x;
 	pos_y = vars->player->pos_y;
-	if (keycode == 119 && !checkCollision(vars, pos_x + vars->player->dir[0] * 5, pos_y + vars->player->dir[1] * 5))
+	if (keycode == 119 && !checkCollision(vars, pos_x + (vars->player->dir[0] * 0.1) , pos_y + (vars->player->dir[1] * 0.1)))
 	{
-		vars->player->pos_x += vars->player->dir[0] * 5;
-		vars->player->pos_y +=vars->player->dir[1] * 5;
+		vars->player->pos_x += vars->player->dir[0] * 0.1;
+		vars->player->pos_y += vars->player->dir[1] * 0.1;
 	}
-	if (keycode == 115 && !checkCollision(vars, pos_x - vars->player->dir[0] * 5, pos_y - vars->player->dir[1] * 5))
+	if (keycode == 115 && !checkCollision(vars, pos_x - (vars->player->dir[0] * 0.1), pos_y - (vars->player->dir[1] * 0.1)))
 	{
 		// Le joueur se deplace de ~-5 pixels
-		vars->player->pos_x -= vars->player->dir[0] * 5;
-		vars->player->pos_y -= vars->player->dir[1] * 5;
+		vars->player->pos_x -= vars->player->dir[0] * 0.1;
+		vars->player->pos_y -= vars->player->dir[1] * 0.1;
 	}
 	if (keycode == 97)
 	{
 		vars->player->angle = -0.1;
 		oldDir = vars->player->dir[0];
-		// Modifie la direction du vecteur de -0.1 en appliquant une formule
+		// Modifie la direction du vecteur de -0.1 degré en appliquant une formule
 		vars->player->dir[0] = (vars->player->dir[0] * cosf(vars->player->angle)) - (vars->player->dir[1] * sinf(vars->player->angle));
 		vars->player->dir[1] = (oldDir * sinf(vars->player->angle) + (vars->player->dir[1] * cosf(vars->player->angle)));
 	}
@@ -162,7 +173,7 @@ int key_press(int keycode, t_vars *vars)
 	{
 		vars->player->angle = 0.1;
 		oldDir = vars->player->dir[0];
-		// Modifie la direction du vecteur de -0.1 en appliquant une formule
+		// Modifie la direction du vecteur de -0.1 degré en appliquant une formule
 		vars->player->dir[0] = (vars->player->dir[0] * cosf(vars->player->angle)) - (vars->player->dir[1] * sinf(vars->player->angle));
 		vars->player->dir[1] = (oldDir * sinf(vars->player->angle) + (vars->player->dir[1] * cosf(vars->player->angle)));
 	}
@@ -191,8 +202,8 @@ int main(void)
 		{1,1,1,1,1,1,1,1,1,1}
 	};
 
-	player.pos_x = 380;
-	player.pos_y = 380;
+	player.pos_x = 3;
+	player.pos_y = 3;
 	player.dir[0] = -1;
 	player.dir[1] = 0;
 
