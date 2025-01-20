@@ -142,14 +142,12 @@ void draw_line2(int **map, t_frame frame, double x0, double y0, double x1, doubl
 	{
 		if(stepX < 0)
 			mapX -= stepX;
-		printf("rayX : %d, rayY : %lf \n", mapX, player.pos_y + (player.dir[0] / player.dir[1] * (fabs(mapX - player.pos_x))));
 		draw_line(frame, player.pos_x * 50, player.pos_y * 50, mapX * 50, (player.pos_y + ((player.dir[1] / player.dir[0]) * ((fabs(mapX - player.pos_x) * stepX)))) * 50);
 	}
 	else
 	{
 		if (stepY < 0)
 			mapY -= stepY;
-		printf("rayX : %lf, rayY : %d \n", (player.pos_x + (sideDistY / deltaDistY) * player.dir[0]), mapY);
 		draw_line(frame, player.pos_x * 50, player.pos_y * 50, (player.pos_x + ((player.dir[0] / player.dir[1]) * (fabs(mapY - player.pos_y) * stepY)))* 50, mapY * 50);
 	}
  }
@@ -186,7 +184,7 @@ void	draw_square(int x, int y, int size, int color, t_frame frame)
 		while (j < x + size)
 		{
 			if (i == y || i == y+size-1 || j == x || j == x+size-1)
-				my_mlx_pixel_put(&frame,j, i, 0xAA0000);
+				my_mlx_pixel_put(&frame,j, i, 0xAA5599);
 			else
 				my_mlx_pixel_put(&frame, j, i, color);
 			j++;
