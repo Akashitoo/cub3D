@@ -141,16 +141,16 @@ void draw_line2(int **map, t_frame frame, double x0, double y0, double x1, doubl
 	if (side == 0)
 	{
 		if(stepX < 0)
-			mapX -= stepX; 
-		printf("rayX : %d, rayY : %lf \n", mapX, (player.pos_y + (sideDistX / deltaDistX) * player.dir[1]));
-		draw_line(frame, player.pos_x * 50, player.pos_y * 50, mapX * 50, (player.pos_y + (sideDistX / deltaDistX) * player.dir[1]) * 50);
+			mapX -= stepX;
+		printf("rayX : %d, rayY : %lf \n", mapX, player.pos_y + (player.dir[0] / player.dir[1] * (fabs(mapX - player.pos_x))));
+		draw_line(frame, player.pos_x * 50, player.pos_y * 50, mapX * 50, (player.pos_y + ((player.dir[1] / player.dir[0]) * ((fabs(mapX - player.pos_x) * stepX)))) * 50);
 	}
 	else
 	{
 		if (stepY < 0)
 			mapY -= stepY;
-		printf("rayX : %d, rayY : %lf \n", mapX, (player.pos_y + (sideDistX / deltaDistX) * player.dir[1]));
-		draw_line(frame, player.pos_x * 50, player.pos_y * 50, (player.pos_x + (sideDistY / deltaDistY) * player.dir[0]) * 50, mapY * 50);
+		printf("rayX : %lf, rayY : %d \n", (player.pos_x + (sideDistY / deltaDistY) * player.dir[0]), mapY);
+		draw_line(frame, player.pos_x * 50, player.pos_y * 50, (player.pos_x + ((player.dir[0] / player.dir[1]) * (fabs(mapY - player.pos_y) * stepY)))* 50, mapY * 50);
 	}
  }
 
@@ -229,7 +229,7 @@ void displayFrame(t_player player, int **map, t_frame frame, t_vars vars)
 	draw_player(player, frame);
 	calculateRay(frame, player, map);
 	// Desssine un rayon de ~100 pixels depuis le joueur 
-	draw_line2(map, frame, player.pos_x * 50, player.pos_y * 50, (player.pos_x * 50) + player.dir[0] * 300, (player.pos_y * 50) + player.dir[1] * 300);
+	//draw_line2(map, frame, player.pos_x * 50, player.pos_y * 50, (player.pos_x * 50) + player.dir[0] * 300, (player.pos_y * 50) + player.dir[1] * 300);
 	//printf("dirX : %f dirY : %f\n", vars.player->dir[0], vars.player->dir[1]);
 	mlx_put_image_to_window(vars.mlx, vars.win, frame.img, 0, 0);
 }
