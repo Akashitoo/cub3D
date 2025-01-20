@@ -21,7 +21,33 @@ void	my_mlx_pixel_put(t_frame *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-void draw_line(int **map, t_frame frame, double x0, double y0, double x1, double y1)
+void draw_line(t_frame frame, double x0, double y0, double x1, double y1)
+{
+	double dx;
+	double dy;
+	int step;
+	int i;
+	double x;
+	double y;
+
+	dx = x1 - x0;
+	dy = y1 - y0;
+
+	x = x0;
+	y = y0;
+	i = 0;
+	step = (int)fmax(fabs(dx), fabs(dy));
+
+	while (i < step)
+	{
+		x += dx / step;
+		y += dy / step;
+		my_mlx_pixel_put(&frame, x, y, 0xFF0000);
+		i++;
+	}
+}
+
+void draw_line2(int **map, t_frame frame, double x0, double y0, double x1, double y1)
 {
 	double dx;
 	double dy;
@@ -44,17 +70,89 @@ void draw_line(int **map, t_frame frame, double x0, double y0, double x1, double
 		y += dy / step;
 		if (map[(int)y/50][(int)x/50])
 			return;
-		my_mlx_pixel_put(&frame, x, y, 0xFF0000);
+		my_mlx_pixel_put(&frame, x, y, 0x00AABB);
 		i++;
 	}
-	(void)map;
 }
 
-// void	calculateRay(t_frame frame, t_player player, int **map)
-// {
-// 	double deltaX;
+ void	calculateRay(t_frame frame, t_player player, int **map)
+ {
+	int mapX;
+	int mapY;
 
-// }
+ 	double deltaDistX;
+	double deltaDistY;
+
+	double sideDistX;
+	double sideDistY;
+
+	int side;
+	int hit;
+
+	int stepX;
+	int stepY;
+
+	mapX = (int)player.pos_x;
+	mapY = (int)player.pos_y;
+
+	deltaDistX = sqrt(1 + (player.dir[1] * player.dir[1]) / (player.dir[0] * player.dir[0]));
+	deltaDistY = sqrt(1 + (player.dir[0] * player.dir[0]) / (player.dir[1] * player.dir[1]));
+	
+	hit = 0;	
+	
+	if (player.dir[0] < 0)
+	{
+		stepX = -1;
+		sideDistX = (player.pos_x - mapX) * deltaDistX;
+	}
+	else
+	{
+		stepX = 1;
+		sideDistX = (mapX + 1 - player.pos_x) * deltaDistX;
+	}
+	if (player.dir[1] < 0)
+	{
+		stepY = -1;
+		sideDistY = (player.pos_y - mapY) * deltaDistY;
+	}
+	else
+	{
+		stepY = 1;
+		sideDistY = (mapY + 1 - player.pos_y) * deltaDistY;
+	}
+	while (hit == 0)
+	{
+		if (sideDistX < sideDistY)
+		{
+			sideDistX += deltaDistX;
+			mapX += stepX;
+			side = 0;
+		}
+		else
+		{
+			sideDistY += deltaDistY;
+			mapY += stepY;
+			side = 1;
+		}
+		if (map[mapY][mapX])
+			hit = 1;
+	}
+
+	if (side == 0)
+	{
+		if(stepX < 0)
+			mapX -= stepX; 
+		printf("rayX : %d, rayY : %lf \n", mapX, (player.pos_y + (sideDistX / deltaDistX) * player.dir[1]));
+		draw_line(frame, player.pos_x * 50, player.pos_y * 50, mapX * 50, (player.pos_y + (sideDistX / deltaDistX) * player.dir[1]) * 50);
+	}
+	else
+	{
+		if (stepY < 0)
+			mapY -= stepY;
+		printf("rayX : %d, rayY : %lf \n", mapX, (player.pos_y + (sideDistX / deltaDistX) * player.dir[1]));
+		draw_line(frame, player.pos_x * 50, player.pos_y * 50, (player.pos_x + (sideDistY / deltaDistY) * player.dir[0]) * 50, mapY * 50);
+	}
+ }
 
 void	initMap(t_vars *vars, int map[10][10])
 {
@@ -87,7 +185,7 @@ void	draw_square(int x, int y, int size, int color, t_frame frame)
 		j = x;
 		while (j < x + size)
 		{
-			if (i == y || i == y+size || j == x || j == x+size)
+			if (i == y || i == y+size-1 || j == x || j == x+size-1)
 				my_mlx_pixel_put(&frame,j, i, 0xAA0000);
 			else
 				my_mlx_pixel_put(&frame, j, i, color);
@@ -129,8 +227,9 @@ void displayFrame(t_player player, int **map, t_frame frame, t_vars vars)
 	
 	draw_map(map, 10, 0xFFFFFF, frame);
 	draw_player(player, frame);
+	calculateRay(frame, player, map);
 	// Desssine un rayon de ~100 pixels depuis le joueur 
-	draw_line(map, frame, player.pos_x * 50, player.pos_y * 50, (player.pos_x * 50) + player.dir[0] * 200, (player.pos_y * 50) + player.dir[1] * 200);
+	draw_line2(map, frame, player.pos_x * 50, player.pos_y * 50, (player.pos_x * 50) + player.dir[0] * 300, (player.pos_y * 50) + player.dir[1] * 300);
 	//printf("dirX : %f dirY : %f\n", vars.player->dir[0], vars.player->dir[1]);
 	mlx_put_image_to_window(vars.mlx, vars.win, frame.img, 0, 0);
 }
