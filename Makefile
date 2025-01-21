@@ -7,7 +7,7 @@ CFLAGS = -Wall -Werror -Wextra -O3
 MLXFLAGS = -L ./minilibx-linux -lmlx -Ilmlx -lXext -lX11 -lm
 LIBFT = ./libft/libft.a
 
-SRC = main.c \
+SRC = main.c display2D.c event.c raycasting.c\
 
 OBJS = $(SRC:.c=.o)
 
