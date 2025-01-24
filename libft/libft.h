@@ -41,7 +41,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_itoa(int n);
 char	*ft_strchr(const char *string, int searchedChar);
 char	*ft_strdup(const char *s);
-char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strjoin(char *s1, char *s2);
 
 void	*ft_memcpy(void *destination, const void *source, size_t size);
 void	*ft_memset(void *s, int c, size_t n);

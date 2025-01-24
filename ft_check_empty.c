@@ -1,27 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_check_empty.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abalasub <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mqwa <mqwa@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/06 11:40:36 by abalasub          #+#    #+#             */
-/*   Updated: 2023/11/21 13:24:55 by abalasub         ###   ########.fr       */
+/*   Created: 2025/01/16 19:31:58 by mqwa              #+#    #+#             */
+/*   Updated: 2025/01/16 19:33:06 by mqwa             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "cub3D.h"
 
-size_t	ft_strlen(const char *s)
+static int	ft_only_spaces(char *str)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
-	if (!s)
-		return(0);
-	while (s[i])
+	while (str[i])
 	{
+		if (!ft_isspace(str[i]))
+			return (0);
 		i++;
 	}
-	return (i);
+	return (1);
+}
+
+int	ft_check_empty(char *str)
+{
+	return (ft_only_spaces(str));
 }

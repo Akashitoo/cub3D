@@ -15,7 +15,15 @@
 # include "minilibx-linux/mlx.h"
 # include "libft/libft.h"
 # include <math.h>
+# include <stdio.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include <string.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <fcntl.h>
 
+# define BUFF_SIZE 2048
 
 typedef struct	s_ray {
 
@@ -57,13 +65,71 @@ typedef struct	s_vars {
 	int			**map;
 }				t_vars;
 
-// Display 2D functions !
+typedef struct s_data
+{
+	char	**tab;
+	char	**map;
+	char	*line;
+	char	*no_path;
+	char	*so_path;
+	char	*we_path;
+	char	*ea_path;
+	int		f_clr;
+	int		c_clr;
+	int		no_nb;
+	int		so_nb;
+	int		we_nb;
+	int		ea_nb;
+	int		f_nb;
+	int		c_nb;
+}				t_data;
+
+typedef struct s_game
+{
+	t_data	data;
+	t_player *player;
+	t_frame	*frame;
+	void		*mlx;
+	void		*win;
+}				t_game;
+
+//			CUB3D
+
+void	setup_game(char *file);
+
+//			PARSING
+
+int		ft_check_arg(char *str);
+int		ft_read_file(t_game *game, char *file);
+int		ft_create_tab(t_game *game);
+int		ft_setup_data(t_game *game);
+int		ft_fill_color(char *str, int *nb);
+int		check_color_str(char *str);
+char		*ft_fill_path(t_game *game, char *str, int *nb);
+int		ft_get_maxlen(char **tab);
+int		ft_check_lim(char **map);
+char		**ft_create_map(char **tab, int max);
+int		ft_check_map(char **map, int max);
+int		ft_isspace(int c);
+int		ft_isstart(int c);
+char		*ft_strdup_max(char *s, int max);
+int		ft_check_empty(char *str);
+int		ft_strcmp(char *s1, char *s2);
+//			FREE_PRINT
+
+void	ft_print_error(char *file, char *str);
+void	ft_clear_tab(char ***tab, int pos);
+void	ft_clear_parse(t_game *game, char *str);
+void	ft_clear_all(t_game *game, char *str);
+void	ft_exit_err(char *file, char *str, int ex);
+
+// Display functions !
 
 void	draw_line(t_frame frame, double x0, double y0, double x1, double y1);
 void	draw_square(int x, int y, int size, int color, t_frame frame);
 void	draw_player(t_player player, t_frame frame);
 void	draw_map(int **map, int size, int color, t_frame frame);
-void	display_frame(t_player player, int **map, t_frame frame, t_vars vars);
+void	display_frame(t_player player, int **map, t_frame frame, t_game game);
 void	draw_stripe(t_frame frame, int x, int draw_start, int draw_end, int color);
 void	my_mlx_pixel_put(t_frame *data, int x, int y, int color);
 
@@ -73,6 +139,6 @@ void	raycasting(t_frame frame, t_player player, int **map);
 
 // Event
 
-int	key_press(int keycode, t_vars *vars);
+int	key_press(int keycode, t_game *vars);
 
 #endif

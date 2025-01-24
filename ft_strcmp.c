@@ -1,27 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abalasub <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mqwa <mqwa@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/06 11:40:36 by abalasub          #+#    #+#             */
-/*   Updated: 2023/11/21 13:24:55 by abalasub         ###   ########.fr       */
+/*   Created: 2025/01/17 11:02:39 by mqwa              #+#    #+#             */
+/*   Updated: 2025/01/17 11:02:56 by mqwa             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "cub3D.h"
 
-size_t	ft_strlen(const char *s)
+int	ft_strcmp(char *s1, char *s2)
 {
-	size_t	i;
-
-	i = 0;
-	if (!s)
-		return(0);
-	while (s[i])
+	while (*s1 && *s2 && *s1 == *s2)
 	{
-		i++;
+		s1++;
+		s2++;
 	}
-	return (i);
+	return (*s1 - *s2);
 }

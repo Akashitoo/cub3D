@@ -96,7 +96,7 @@ void	draw_map(int **map, int size, int color, t_frame frame)
 	}
 }
 
-void	display_frame(t_player player, int **map, t_frame frame, t_vars vars)
+void	display_frame(t_player player, int **map, t_frame frame, t_game game)
 {
 	//draw_map(map, 10, 0xFFFFFF, frame);
 	//draw_player(player, frame);
@@ -106,5 +106,5 @@ void	display_frame(t_player player, int **map, t_frame frame, t_vars vars)
 	draw_square(0, 250, 250, 0x0022AA / 2, frame);
 	draw_square(250, 250, 250, 0x0022AA / 2, frame);
 	raycasting(frame, player, map);
-	mlx_put_image_to_window(vars.mlx, vars.win, frame.img, 0, 0);
+	mlx_put_image_to_window(game.mlx, game.win, frame.img, 0, 0);
 }

@@ -1,27 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_isspace.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abalasub <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mqwa <mqwa@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/06 11:40:36 by abalasub          #+#    #+#             */
-/*   Updated: 2023/11/21 13:24:55 by abalasub         ###   ########.fr       */
+/*   Created: 2025/01/09 18:00:43 by mqwa              #+#    #+#             */
+/*   Updated: 2025/01/21 00:17:36 by mqwa             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "cub3D.h"
 
-size_t	ft_strlen(const char *s)
+int	ft_isspace(int c)
 {
-	size_t	i;
-
-	i = 0;
-	if (!s)
-		return(0);
-	while (s[i])
-	{
-		i++;
-	}
-	return (i);
+	return (c == ' ' || (c >= 9 && c <= 13));
 }
