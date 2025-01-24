@@ -61,7 +61,7 @@ void	draw_square(int x, int y, int size, int color, t_frame frame)
 		while (j < x + size)
 		{
 			if (i == y || i == y + size - 1 || j == x || j == x + size - 1)
-				my_mlx_pixel_put(&frame, j, i, color / 2);
+				my_mlx_pixel_put(&frame, j, i, color);
 			else
 				my_mlx_pixel_put(&frame, j, i, color);
 			j++;
@@ -101,7 +101,10 @@ void	display_frame(t_player player, int **map, t_frame frame, t_vars vars)
 	//draw_map(map, 10, 0xFFFFFF, frame);
 	//draw_player(player, frame);
 	//calculateRay(frame, player, map);
-	draw_square(0, 0, 500, 0x0022AA, frame);
+	draw_square(0, 0, 250, 0x0022AA, frame);
+	draw_square(250, 0, 250, 0x0022AA, frame);
+	draw_square(0, 250, 250, 0x0022AA / 2, frame);
+	draw_square(250, 250, 250, 0x0022AA / 2, frame);
 	raycasting(frame, player, map);
 	mlx_put_image_to_window(vars.mlx, vars.win, frame.img, 0, 0);
 }

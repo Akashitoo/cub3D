@@ -41,7 +41,7 @@ int	key_press(int keycode, t_vars *vars)
 	}
 	if (keycode == 97)
 	{
-		vars->player->angle = 0.1;
+		vars->player->angle = -0.1;
 		old_dir = vars->player->dir[0];
 		old_dir_plane = vars->player->dir_plane[0];
 		// Modifie la direction du vecteur de -0.1 degré en appliquant une formule
@@ -52,7 +52,7 @@ int	key_press(int keycode, t_vars *vars)
 	}
 	if (keycode == 100)
 	{
-		vars->player->angle = -0.1;
+		vars->player->angle = 0.1;
 		old_dir = vars->player->dir[0];
 		old_dir_plane = vars->player->dir_plane[0];
 		// Modifie la direction du vecteur de -0.1 degré en appliquant une formule

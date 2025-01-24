@@ -110,11 +110,13 @@ void	display_stripe(t_frame frame, t_ray ray, int x)
 
 	if (ray.side == 0)
 	{
+		//line_height = (int)(500 / ray.side_x );
 		line_height = (int)(500 / (ray.side_x - ray.delta_x));
 		color = 0x880000;
 	}
 	else
 	{
+		//line_height = (int)(500 / ray.side_y);	
 		line_height = (int)(500 / (ray.side_y - ray.delta_y));
 		color = 0xFF0000;
 	}
@@ -138,11 +140,12 @@ void	raycasting(t_frame frame, t_player player, int **map)
 	x = 0;
 	while (x < 500)
 	{
-		camerax = 2 * x / (double)500 - 1;
+		camerax = ((2 * x) / (double)500) - 1;
 		ray_x = player.dir[0] + player.dir_plane[0] * camerax;
 		ray_y = player.dir[1] + player.dir_plane[1] * camerax;
 		ray = calculate_ray(player, map, ray_x, ray_y);
 		display_stripe(frame, ray, x);
+		//draw_ray(ray, player, frame);
 		x += 1;
 	}
 }

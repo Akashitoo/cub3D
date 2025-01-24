@@ -67,7 +67,7 @@ int	main(void)
 	player.dir[0] = -1;
 	player.dir[1] = 0;
 	player.dir_plane[0] = 0;
-	player.dir_plane[1] = 0.50;
+	player.dir_plane[1] = -0.50;
 	height = 500;
 	width = 500;
 	vars.mlx = mlx_init();
