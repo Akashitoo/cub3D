@@ -12,10 +12,10 @@
 
 #include "cub3D.h"
 
-static int	ft_free_return(char **line, int fd)
+static int	ft_free_return(t_game *game, int fd)
 {
-	if (line)
-		free(line);
+	if (game->data.line)
+		free(game->data.line);
 	close(fd);
 	return (0);
 }
@@ -34,7 +34,7 @@ int	ft_read_file(t_game *game, char *file)
 	{
 		read_bytes = read(fd, buffer, BUFF_SIZE - 1);
 		if (read_bytes == -1)
-			return (ft_free_return(&game->data.line, fd));
+			return (ft_free_return(game, fd));
 		buffer[read_bytes] = '\0';
 		game->data.line = ft_strjoin(game->data.line, buffer);
 		if (!game->data.line)

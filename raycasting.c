@@ -74,7 +74,7 @@ void	draw_ray(t_ray ray, t_player player, t_frame frame)
 	}
 }
 
-t_ray	calculate_ray(t_player player, int **map, double ray_x, double ray_y)
+t_ray	calculate_ray(t_player player, char **map, double ray_x, double ray_y)
 {
 	t_ray	ray;
 	int		hit;
@@ -95,7 +95,7 @@ t_ray	calculate_ray(t_player player, int **map, double ray_x, double ray_y)
 			ray.map_y += ray.step_y;
 			ray.side = 1;
 		}
-		if (map[ray.map_y][ray.map_x])
+		if (map[ray.map_y][ray.map_x] == '1')
 			hit = 1;
 	}
 	return (ray);
@@ -129,7 +129,7 @@ void	display_stripe(t_frame frame, t_ray ray, int x)
 	draw_stripe(frame, x, draw_start, draw_end, color);
 }
 
-void	raycasting(t_frame frame, t_player player, int **map)
+void	raycasting(t_frame frame, t_player player, char **map)
 {
 	int		x;
 	double	ray_x;

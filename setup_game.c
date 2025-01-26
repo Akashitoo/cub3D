@@ -41,14 +41,14 @@ void init_player(t_player *player, char **map)
 		x = 0;
 		while (map[y][x])
 		{
-			if (map[y][x] == 'N' || map[y][x] == 'S' || map[y][x] == 'E' || map[y][x] == 'E' )
+			if (map[y][x] == 'N' || map[y][x] == 'S' || map[y][x] == 'W' || map[y][x] == 'E' )
 			{
 				player->pos_x = x;
 				player->pos_y = y;
-				player->dir[0] = -1;
-				player->dir[1] = 0;
-				player->dir_plane[0] = 0;
-				player->dir_plane[1] = -0.60;
+				player->dir[0] = 0;
+				player->dir[1] = -1;
+				player->dir_plane[0] = 0.50;
+				player->dir_plane[1] = 0;
 			}
 			x++;
 		}
@@ -82,18 +82,22 @@ void	setup_game(char *file)
 	init_player(&player, game.data.map);
 	frame.img = mlx_new_image(game.mlx, width, height);
 	frame.addr = mlx_get_data_addr(frame.img, &frame.bits_per_pixel, &frame.line_length, &frame.endian);
-	//display_frame(player, vars.map, frame, vars);
+	game.frame = &frame;
+	game.player = &player;
+	display_frame(player, game.data.map, frame, game);
+	
+	//pour l'instant, on affiche juste les path, colors et la map
+	// i = 0;
+	// while (game.data.map[i])
+	// 	printf("%s\n", game.data.map[i++]);
+	// printf("%s\n", game.data.no_path);
+	// printf("%s\n", game.data.so_path);
+	// printf("%s\n", game.data.we_path);
+	// printf("%s\n", game.data.ea_path);
+	// printf("%d\n", game.data.f_clr);
+	// printf("%d\n", game.data.c_clr);
+	mlx_key_hook(game.win, key_press, &game);
 	mlx_loop(game.mlx);
-	// pour l'instant, on affiche juste les path, colors et la map
-	//i = 0;
-	//while (game.data.map[i])
-	//	printf("%s\n", game.data.map[i++]);
-	//printf("%s\n", game.data.no_path);
-	//printf("%s\n", game.data.so_path);
-	//printf("%s\n", game.data.we_path);
-	//printf("%s\n", game.data.ea_path);
-	//printf("%d\n", game.data.f_clr);
-	//printf("%d\n", game.data.c_clr);
-	//ft_clear_all(&game, NULL);
-	//exit(0);
+	ft_clear_all(&game, NULL);
+	exit(0);
 }

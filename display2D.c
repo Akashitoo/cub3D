@@ -96,7 +96,7 @@ void	draw_map(int **map, int size, int color, t_frame frame)
 	}
 }
 
-void	display_frame(t_player player, int **map, t_frame frame, t_game game)
+void	display_frame(t_player player, char **map, t_frame frame, t_game game)
 {
 	//draw_map(map, 10, 0xFFFFFF, frame);
 	//draw_player(player, frame);
