@@ -24,6 +24,8 @@
 # include <fcntl.h>
 
 # define BUFF_SIZE 2048
+# define ScreenWidth 800
+# define ScreenHeight 600
 
 typedef struct	s_ray {
 

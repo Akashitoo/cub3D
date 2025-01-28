@@ -72,8 +72,8 @@ void	draw_player(t_player player, t_frame frame)
 
 void	display_frame(t_game game)
 {
-	draw_square(0, 0, 800, 300, game.data.c_clr, *game.frame);
-	draw_square(0, 300, 800, 300, game.data.f_clr, *game.frame);
+	draw_square(0, 0, ScreenWidth, ScreenHeight / 2, game.data.c_clr, *game.frame);
+	draw_square(0, ScreenHeight / 2, ScreenWidth, ScreenHeight / 2, game.data.f_clr, *game.frame);
 	raycasting(game);
 	mlx_put_image_to_window(game.mlx, game.win, game.frame->img, 0, 0);
 }

@@ -43,8 +43,8 @@ void init_player(t_player *player, char **map)
 		{
 			if (map[y][x] == 'N' || map[y][x] == 'S' || map[y][x] == 'W' || map[y][x] == 'E' )
 			{
-				player->pos_x = x;
-				player->pos_y = y;
+				player->pos_x = x+0.1;
+				player->pos_y = y+0.1;
 				player->dir[0] = 0;
 				player->dir[1] = -1;
 				player->dir_plane[0] = 0.66;
@@ -62,8 +62,6 @@ void	setup_game(char *file)
 	t_game	game;
 	t_frame	frame;
 	t_player player;
-	int		width;
-	int		height;
 
 	if (!ft_check_arg(file))
 		ft_exit_err(file, " is not a correct file\n", 1);
@@ -75,12 +73,11 @@ void	setup_game(char *file)
 	if (!ft_setup_data(&game))
 		ft_clear_parse(&game, "Wrong format in file\n");
 	// On commence ici a call la fonction qui va gerer minilibx et generer notre "jeu"
-	width = 800;
-	height = 600;
+
 	game.mlx = mlx_init();
-	game.win = mlx_new_window(game.mlx, width, height, "cub3D");
+	game.win = mlx_new_window(game.mlx, ScreenWidth, ScreenHeight, "cub3D");
 	init_player(&player, game.data.map);
-	frame.img = mlx_new_image(game.mlx, width, height);
+	frame.img = mlx_new_image(game.mlx, ScreenWidth, ScreenHeight);
 	frame.addr = mlx_get_data_addr(frame.img, &frame.bits_per_pixel, &frame.line_length, &frame.endian);
 	game.frame = &frame;
 	game.player = &player;
