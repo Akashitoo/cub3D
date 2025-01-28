@@ -18,8 +18,8 @@ void	init_ray(t_ray *ray, t_player player, double ray_x, double ray_y)
 	ray->ray_y = ray_y;
 	ray->map_x = (int)player.pos_x;
 	ray->map_y = (int)player.pos_y;
-	ray->delta_x =  fabs(1 / ray_x);//sqrt(1 + (ray_y * ray_y) / (ray_x * ray_x));
-	ray->delta_y = fabs(1 / ray_y);//sqrt(1 + (ray_x * ray_x) / (ray_y * ray_y));
+	ray->delta_x = fabs(1 / ray_x);
+	ray->delta_y = fabs(1 / ray_y);
 	if (ray_x < 0)
 	{
 		ray->step_x = -1;
@@ -101,35 +101,40 @@ t_ray	calculate_ray(t_player player, char **map, double ray_x, double ray_y)
 	return (ray);
 }
 
-void	display_stripe(t_frame frame, t_ray ray, int x)
+int	get_color_wall(t_game game, t_ray ray)
 {
-	int		line_height;
-	int		draw_start;
-	int		draw_end;
-	int		color;
-
-	if (ray.side == 0)
-	{
-		//line_height = (int)(500 / ray.side_x );
-		line_height = (int)(500 / (ray.side_x - ray.delta_x));
-		color = 0x880000;
-	}
-	else
-	{
-		//line_height = (int)(500 / ray.side_y);	
-		line_height = (int)(500 / (ray.side_y - ray.delta_y));
-		color = 0xFF0000;
-	}
-	draw_start = (-line_height / 2) + (500 / 2);
-	if (draw_start < 0)
-		draw_start = 0;
-	draw_end = (line_height / 2) + (500 / 2);
-	if (draw_end >= 500)
-		draw_end = 500 - 1;
-	draw_stripe(frame, x, draw_start, draw_end, color);
+	if (!ray.side && ray.ray_x > 0)
+		return (0x44ff77);
+	if (!ray.side && ray.ray_x < 0)
+		return (0x44ff77 / 2);
+	if (ray.side && ray.ray_y > 0)
+		return (0x44ff77 / 4);
+	if (ray.side && ray.ray_y < 0)
+		return (0x44ff77 / 8);
+	(void)game;
+	return (0);
 }
 
-void	raycasting(t_frame frame, t_player player, char **map)
+void	display_stripe(t_ray ray, int x, t_game game)
+{
+	int		line_height;
+	int		d_start;
+	int		d_end;
+
+	if (ray.side == 0)
+		line_height = (int)(600 / (ray.side_x - ray.delta_x));
+	else
+		line_height = (int)(600 / (ray.side_y - ray.delta_y));
+	d_start = (-line_height / 2) + (600 / 2);
+	if (d_start < 0)
+		d_start = 0;
+	d_end = (line_height / 2) + (600 / 2);
+	if (d_end >= 600)
+		d_end = 600 - 1;
+	draw_stripe(*game.frame, x, d_start, d_end, get_color_wall(game, ray));
+}
+
+void	raycasting(t_game game)
 {
 	int		x;
 	double	ray_x;
@@ -138,14 +143,13 @@ void	raycasting(t_frame frame, t_player player, char **map)
 	t_ray	ray;
 
 	x = 0;
-	while (x < 500)
+	while (x < 800)
 	{
-		camerax = ((2 * x) / (double)500) - 1;
-		ray_x = player.dir[0] + player.dir_plane[0] * camerax;
-		ray_y = player.dir[1] + player.dir_plane[1] * camerax;
-		ray = calculate_ray(player, map, ray_x, ray_y);
-		display_stripe(frame, ray, x);
-		//draw_ray(ray, player, frame);
+		camerax = ((2 * x) / (double)800) - 1;
+		ray_x = game.player->dir[0] + game.player->dir_plane[0] * camerax;
+		ray_y = game.player->dir[1] + game.player->dir_plane[1] * camerax;
+		ray = calculate_ray(*game.player, game.data.map, ray_x, ray_y);
+		display_stripe(ray, x, game);
 		x += 1;
 	}
 }

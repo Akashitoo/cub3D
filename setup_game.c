@@ -47,7 +47,7 @@ void init_player(t_player *player, char **map)
 				player->pos_y = y;
 				player->dir[0] = 0;
 				player->dir[1] = -1;
-				player->dir_plane[0] = 0.50;
+				player->dir_plane[0] = 0.66;
 				player->dir_plane[1] = 0;
 			}
 			x++;
@@ -75,8 +75,8 @@ void	setup_game(char *file)
 	if (!ft_setup_data(&game))
 		ft_clear_parse(&game, "Wrong format in file\n");
 	// On commence ici a call la fonction qui va gerer minilibx et generer notre "jeu"
-	width = 500;
-	height = 500;
+	width = 800;
+	height = 600;
 	game.mlx = mlx_init();
 	game.win = mlx_new_window(game.mlx, width, height, "cub3D");
 	init_player(&player, game.data.map);
@@ -84,18 +84,7 @@ void	setup_game(char *file)
 	frame.addr = mlx_get_data_addr(frame.img, &frame.bits_per_pixel, &frame.line_length, &frame.endian);
 	game.frame = &frame;
 	game.player = &player;
-	display_frame(player, game.data.map, frame, game);
-	
-	//pour l'instant, on affiche juste les path, colors et la map
-	// i = 0;
-	// while (game.data.map[i])
-	// 	printf("%s\n", game.data.map[i++]);
-	// printf("%s\n", game.data.no_path);
-	// printf("%s\n", game.data.so_path);
-	// printf("%s\n", game.data.we_path);
-	// printf("%s\n", game.data.ea_path);
-	// printf("%d\n", game.data.f_clr);
-	// printf("%d\n", game.data.c_clr);
+	display_frame(game);
 	mlx_key_hook(game.win, key_press, &game);
 	mlx_loop(game.mlx);
 	ft_clear_all(&game, NULL);

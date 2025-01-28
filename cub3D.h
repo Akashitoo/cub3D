@@ -126,16 +126,15 @@ void	ft_exit_err(char *file, char *str, int ex);
 // Display functions !
 
 void	draw_line(t_frame frame, double x0, double y0, double x1, double y1);
-void	draw_square(int x, int y, int size, int color, t_frame frame);
+void	draw_square(int x, int y, int sizex, int sizey, int color, t_frame frame);
 void	draw_player(t_player player, t_frame frame);
-void	draw_map(int **map, int size, int color, t_frame frame);
-void	display_frame(t_player player, char **map, t_frame frame, t_game game);
+void	display_frame(t_game game);
 void	draw_stripe(t_frame frame, int x, int draw_start, int draw_end, int color);
 void	my_mlx_pixel_put(t_frame *data, int x, int y, int color);
 
 // Divers
 
-void	raycasting(t_frame frame, t_player player, char **map);
+void	raycasting(t_game game);
 
 // Event
 
