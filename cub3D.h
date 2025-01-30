@@ -91,6 +91,7 @@ typedef struct s_game
 	t_data		data;
 	t_player 	*player;
 	t_frame		*frame;
+	t_frame		*textures[4];
 	void		*mlx;
 	void		*win;
 }				t_game;
@@ -131,12 +132,13 @@ void	draw_line(t_frame frame, double x0, double y0, double x1, double y1);
 void	draw_square(int x, int y, int sizex, int sizey, int color, t_frame frame);
 void	draw_player(t_player player, t_frame frame);
 void	display_frame(t_game game);
-void	draw_stripe(t_frame frame, int x, int draw_start, int draw_end, int color);
+void	draw_stripe(t_game game, int x, int draw_start, int draw_end, int text_x, int line_height);
 void	my_mlx_pixel_put(t_frame *data, int x, int y, int color);
 
 // Divers
 
 void	raycasting(t_game game);
+uint	get_pixel_img(t_frame *data, int x, int y);
 
 // Event
 

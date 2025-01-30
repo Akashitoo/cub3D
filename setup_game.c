@@ -57,11 +57,16 @@ void init_player(t_player *player, char **map)
 	return ;
 }
 
+
+
 void	setup_game(char *file)
 {
 	t_game	game;
 	t_frame	frame;
 	t_player player;
+	t_frame	texture;
+	int 		width;
+	int 		height;
 
 	if (!ft_check_arg(file))
 		ft_exit_err(file, " is not a correct file\n", 1);
@@ -79,8 +84,12 @@ void	setup_game(char *file)
 	init_player(&player, game.data.map);
 	frame.img = mlx_new_image(game.mlx, ScreenWidth, ScreenHeight);
 	frame.addr = mlx_get_data_addr(frame.img, &frame.bits_per_pixel, &frame.line_length, &frame.endian);
+	texture.img = mlx_xpm_file_to_image(game.mlx, "wall.xpm", &width, &height);
+	texture.addr = mlx_get_data_addr(texture.img, &texture.bits_per_pixel, &texture.line_length, &texture.endian);
+
 	game.frame = &frame;
 	game.player = &player;
+	game.textures[0] = &texture;
 	display_frame(game);
 	mlx_key_hook(game.win, key_press, &game);
 	mlx_loop(game.mlx);

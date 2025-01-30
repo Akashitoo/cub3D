@@ -35,14 +35,29 @@ void	draw_line(t_frame frame, double x0, double y0, double x1, double y1)
 	}
 }
 
-void	draw_stripe(t_frame frame, int x, int draw_start, int draw_end, int color)
+uint get_pixel_img(t_frame *data, int x, int y)
+{
+	char *dst;
+
+	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+	return (*(unsigned int *)dst);
+}
+
+void	draw_stripe(t_game game, int x, int draw_start, int draw_end, int text_x, int line_height)
 {
 	int	y;
+	double 	text_pos;
+	double	step;
+	int	text_y;
 
+	step = 1.0 * 256 / line_height;
+	text_pos = (draw_start - ScreenHeight / 2 + line_height / 2) * step;
 	y = draw_start;
 	while (y <= draw_end)
 	{
-		my_mlx_pixel_put(&frame, x, y, color);
+		text_y = (int)text_pos;
+		text_pos += step;
+		my_mlx_pixel_put(game.frame, x, y, get_pixel_img(game.textures[0], text_x, text_y));
 		y++;
 	}
 }
