@@ -26,6 +26,8 @@
 # define BUFF_SIZE 2048
 # define ScreenWidth 800
 # define ScreenHeight 600
+# define TextWidth 1000
+# define TextHeight 1000
 
 typedef struct	s_ray {
 
@@ -40,6 +42,9 @@ typedef struct	s_ray {
 	int		map_x;
 	int		map_y;
 	int		side;
+	int		screen_x;
+	int		text_x;
+	int		line_height;
 }				t_ray;
 
 typedef struct	s_frame {
@@ -132,7 +137,7 @@ void	draw_line(t_frame frame, double x0, double y0, double x1, double y1);
 void	draw_square(int x, int y, int sizex, int sizey, int color, t_frame frame);
 void	draw_player(t_player player, t_frame frame);
 void	display_frame(t_game game);
-void	draw_stripe(t_game game, int x, int draw_start, int draw_end, int text_x, int line_height);
+void	draw_stripe(t_game game, t_ray ray, int draw_start, int draw_end);
 void	my_mlx_pixel_put(t_frame *data, int x, int y, int color);
 
 // Divers

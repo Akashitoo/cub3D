@@ -84,7 +84,7 @@ void	setup_game(char *file)
 	init_player(&player, game.data.map);
 	frame.img = mlx_new_image(game.mlx, ScreenWidth, ScreenHeight);
 	frame.addr = mlx_get_data_addr(frame.img, &frame.bits_per_pixel, &frame.line_length, &frame.endian);
-	texture.img = mlx_xpm_file_to_image(game.mlx, "wall.xpm", &width, &height);
+	texture.img = mlx_xpm_file_to_image(game.mlx, "wall2.xpm", &width, &height);
 	texture.addr = mlx_get_data_addr(texture.img, &texture.bits_per_pixel, &texture.line_length, &texture.endian);
 
 	game.frame = &frame;

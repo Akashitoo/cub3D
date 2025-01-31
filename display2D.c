@@ -43,21 +43,21 @@ uint get_pixel_img(t_frame *data, int x, int y)
 	return (*(unsigned int *)dst);
 }
 
-void	draw_stripe(t_game game, int x, int draw_start, int draw_end, int text_x, int line_height)
+void	draw_stripe(t_game game, t_ray ray, int draw_start, int draw_end)
 {
 	int	y;
-	double 	text_pos;
+	int	color;
 	double	step;
-	int	text_y;
+	double	text_y;
 
-	step = 1.0 * 256 / line_height;
-	text_pos = (draw_start - ScreenHeight / 2 + line_height / 2) * step;
+	step = 1.0 * TextHeight / ray.line_height;
+	text_y = (draw_start - ScreenHeight / 2 + ray.line_height / 2) * step;
 	y = draw_start;
 	while (y <= draw_end)
 	{
-		text_y = (int)text_pos;
-		text_pos += step;
-		my_mlx_pixel_put(game.frame, x, y, get_pixel_img(game.textures[0], text_x, text_y));
+		color = get_pixel_img(game.textures[0], ray.text_x, (int)text_y);
+		my_mlx_pixel_put(game.frame, ray.screen_x, y, color);
+		text_y += step;
 		y++;
 	}
 }
@@ -87,8 +87,13 @@ void	draw_player(t_player player, t_frame frame)
 
 void	display_frame(t_game game)
 {
-	draw_square(0, 0, ScreenWidth, ScreenHeight / 2, game.data.c_clr, *game.frame);
-	draw_square(0, ScreenHeight / 2, ScreenWidth, ScreenHeight / 2, game.data.f_clr, *game.frame);
+	int sw;
+	int sh;
+
+	sw = ScreenWidth;
+	sh = ScreenHeight;
+	draw_square(0, 0, sw, sh / 2, game.data.c_clr, *game.frame);
+	draw_square(0, sh / 2, sw, sh / 2, game.data.f_clr, *game.frame);
 	raycasting(game);
 	mlx_put_image_to_window(game.mlx, game.win, game.frame->img, 0, 0);
 }

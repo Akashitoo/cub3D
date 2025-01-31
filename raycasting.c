@@ -115,46 +115,40 @@ int	get_color_wall(t_game game, t_ray ray)
 	return (0);
 }
 
-void	display_stripe(t_ray ray, int x, t_game game)
+void	texture_x(t_ray *ray, t_game game)
 {
-	int		line_height;
-	int		d_start;
-	int		d_end;
-	int 		text_x;
 	double	wall_hit_x;
 	double	pos_x;
 	double	pos_y;
-	int		map_x;
-	int		map_y;
 
 	pos_x = game.player->pos_x;
 	pos_y = game.player->pos_y;
-	map_x = ray.map_x;
-	map_y = ray.map_y;
+	if (ray->side == 0)
+		wall_hit_x = pos_y + ((ray->side_x - ray->delta_x) * ray->ray_y);
+	else
+		wall_hit_x = pos_x + ((ray->side_y - ray->delta_y) * ray->ray_x);
+	wall_hit_x -= (int)wall_hit_x;
+	ray->text_x = (int)(wall_hit_x * (double)TextWidth);
+	ray->text_x = TextWidth - ray->text_x - 1;
+}
+
+void	display_stripe(t_ray ray, t_game game)
+{
+	int		d_start;
+	int		d_end;
 
 	if (ray.side == 0)
-	{
-		line_height = (int)(ScreenHeight / (ray.side_x - ray.delta_x));
-	}
+		ray.line_height = (int)(ScreenHeight / (ray.side_x - ray.delta_x));
 	else
-	{
-		line_height = (int)(ScreenHeight / (ray.side_y - ray.delta_y));
-	}
-	d_start = (-line_height / 2) + (ScreenHeight / 2);
+		ray.line_height = (int)(ScreenHeight / (ray.side_y - ray.delta_y));
+	d_start = (-ray.line_height / 2) + (ScreenHeight / 2);
 	if (d_start < 0)
 		d_start = 0;
-	d_end = (line_height / 2) + (ScreenHeight / 2);
+	d_end = (ray.line_height / 2) + (ScreenHeight / 2);
 	if (d_end >= ScreenHeight)
 		d_end = ScreenHeight - 1;
-
-	if (ray.side == 0)
-		wall_hit_x = (ray.ray_y / ray.ray_x) * (fabs(map_x - pos_x) * ray.step_x);
-	else 
-		wall_hit_x = (ray.ray_x / ray.ray_y) * (fabs(map_y - pos_y) * ray.step_y);
-	wall_hit_x -= (int)wall_hit_x;
-	text_x  = (int) (wall_hit_x * (double)256);
-	text_x = 256 - text_x - 1;
-	draw_stripe(game, x, d_start, d_end, text_x, line_height);
+	texture_x(&ray, game);
+	draw_stripe(game, ray, d_start, d_end);
 }
 
 void	raycasting(t_game game)
@@ -172,7 +166,8 @@ void	raycasting(t_game game)
 		ray_x = game.player->dir[0] + game.player->dir_plane[0] * camerax;
 		ray_y = game.player->dir[1] + game.player->dir_plane[1] * camerax;
 		ray = calculate_ray(*game.player, game.data.map, ray_x, ray_y);
-		display_stripe(ray, x, game);
+		ray.screen_x = x;
+		display_stripe(ray, game);
 		x += 1;
 	}
 }
