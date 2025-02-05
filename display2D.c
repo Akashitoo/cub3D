@@ -43,19 +43,39 @@ uint get_pixel_img(t_frame *data, int x, int y)
 	return (*(unsigned int *)dst);
 }
 
+int	get_wall(t_ray ray)
+{
+	if (ray.side == 0)
+	{
+		if (ray.ray_x < 0)
+			return(0);
+		else
+			return (1);
+	}
+	else
+	{
+		if (ray.ray_y > 0)
+			return (2);
+		else
+			return (3);
+	}
+}
+
 void	draw_stripe(t_game game, t_ray ray, int draw_start, int draw_end)
 {
 	int	y;
+	int	wall_text;
 	int	color;
 	double	step;
 	double	text_y;
 
+	wall_text = get_wall(ray);
 	step = 1.0 * TextHeight / ray.line_height;
 	text_y = (draw_start - ScreenHeight / 2 + ray.line_height / 2) * step;
 	y = draw_start;
 	while (y <= draw_end)
 	{
-		color = get_pixel_img(game.textures[0], ray.text_x, (int)text_y);
+		color = get_pixel_img(game.textures[wall_text], ray.text_x, (int)text_y);
 		my_mlx_pixel_put(game.frame, ray.screen_x, y, color);
 		text_y += step;
 		y++;

@@ -57,16 +57,45 @@ void init_player(t_player *player, char **map)
 	return ;
 }
 
+void init_textures(t_game *game)
+{
+	int		i;
+	int 		width;
+	int 		height;
+	t_frame	*texture;
+	char		*path;
 
+	i = 0;
+	while (i < 4)
+	{
+		texture = malloc(sizeof(t_frame));
+		if (!texture)
+		{
+			ft_clear_all(game, NULL);
+			exit(0);
+		}
+		if (i == 0)
+			path = game->data.no_path;
+		else if(i == 1)
+			path = game->data.so_path;
+		else if (i == 2)
+			path = game->data.ea_path;
+		else if (i == 3)
+			path = game->data.we_path;
+		printf("%s\n", path);
+		texture->img = mlx_xpm_file_to_image(game->mlx, path, &width, &height);
+		texture->addr = mlx_get_data_addr(texture->img, &texture->bits_per_pixel, &texture->line_length, &texture->endian);
+		game->textures[i] = texture;
+		i++;
+	}
+}
 
 void	setup_game(char *file)
 {
 	t_game	game;
 	t_frame	frame;
 	t_player player;
-	t_frame	texture;
-	int 		width;
-	int 		height;
+	
 
 	if (!ft_check_arg(file))
 		ft_exit_err(file, " is not a correct file\n", 1);
@@ -84,12 +113,9 @@ void	setup_game(char *file)
 	init_player(&player, game.data.map);
 	frame.img = mlx_new_image(game.mlx, ScreenWidth, ScreenHeight);
 	frame.addr = mlx_get_data_addr(frame.img, &frame.bits_per_pixel, &frame.line_length, &frame.endian);
-	texture.img = mlx_xpm_file_to_image(game.mlx, "wall2.xpm", &width, &height);
-	texture.addr = mlx_get_data_addr(texture.img, &texture.bits_per_pixel, &texture.line_length, &texture.endian);
-
 	game.frame = &frame;
 	game.player = &player;
-	game.textures[0] = &texture;
+	init_textures(&game);
 	display_frame(game);
 	mlx_key_hook(game.win, key_press, &game);
 	mlx_loop(game.mlx);
