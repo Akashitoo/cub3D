@@ -19,48 +19,65 @@ int	check_collision(t_game *game, double pos_x, double pos_y)
 	return (0);
 }
 
-int	key_press(int keycode, t_game *game)
+void	turn_camera(t_game *game, double angle)
 {
-	double	pos_x;
-	double	pos_y;
 	double	old_dir;
 	double	old_dir_plane;
 
-	pos_x = game->player->pos_x;
-	pos_y = game->player->pos_y;
-	if (keycode == 119 && !check_collision(game, pos_x + (game->player->dir[0] * 0.2), pos_y + (game->player->dir[1] * 0.2)))
+	old_dir = game->player->dir[0];
+	old_dir_plane = game->player->dir_plane[0];
+	game->player->dir[0] = (game->player->dir[0] * cosf(angle))
+		- (game->player->dir[1] * sinf(angle));
+	game->player->dir[1] = (old_dir * sinf(angle)
+			+ (game->player->dir[1] * cosf(angle)));
+	game->player->dir_plane[0] = (game->player->dir_plane[0] * cosf(angle))
+		- (game->player->dir_plane[1] * sinf(angle));
+	game->player->dir_plane[1] = (old_dir_plane * sinf(angle)
+			+ (game->player->dir_plane[1] * cosf(angle)));
+}
+
+void	move_ws(t_game *game, double step)
+{
+	double	next_pos_x;
+	double	next_pos_y;
+
+	next_pos_x = game->player->pos_x + (game->player->dir[0] * step);
+	next_pos_y = game->player->pos_y + (game->player->dir[1] * step);
+	if (!check_collision(game, next_pos_x, next_pos_y))
 	{
-		game->player->pos_x += game->player->dir[0] * 0.2;
-		game->player->pos_y += game->player->dir[1] * 0.2;
+		game->player->pos_x = next_pos_x;
+		game->player->pos_y = next_pos_y;
 	}
-	if (keycode == 115 && !check_collision(game, pos_x - (game->player->dir[0] * 0.2), pos_y - (game->player->dir[1] * 0.2)))
+}
+
+void	move_ad(t_game *game, double step)
+{
+	double	next_pos_x;
+	double	next_pos_y;
+
+	next_pos_x = game->player->pos_x + (game->player->dir_plane[0] * step);
+	next_pos_y = game->player->pos_y + (game->player->dir_plane[1] * step);
+	if (!check_collision(game, next_pos_x, next_pos_y))
 	{
-		// Le joueur se deplace de ~-5 pixels
-		game->player->pos_x -= game->player->dir[0] * 0.2;
-		game->player->pos_y -= game->player->dir[1] * 0.2;
+		game->player->pos_x = next_pos_x;
+		game->player->pos_y = next_pos_y;
 	}
+}
+
+int	key_press(int keycode, t_game *game)
+{
+	if (keycode == 119)
+		move_ws(game, 0.2);
+	if (keycode == 115)
+		move_ws(game, -0.2);
 	if (keycode == 97)
-	{
-		game->player->angle = -0.2;
-		old_dir = game->player->dir[0];
-		old_dir_plane = game->player->dir_plane[0];
-		// Modifie la direction du vecteur de -0.1 degré en appliquant une formule
-		game->player->dir[0] = (game->player->dir[0] * cosf(game->player->angle)) - (game->player->dir[1] * sinf(game->player->angle));
-		game->player->dir[1] = (old_dir * sinf(game->player->angle) + (game->player->dir[1] * cosf(game->player->angle)));
-		game->player->dir_plane[0] = (game->player->dir_plane[0] * cosf(game->player->angle)) - (game->player->dir_plane[1] * sinf(game->player->angle));
-		game->player->dir_plane[1] = (old_dir_plane * sinf(game->player->angle) + (game->player->dir_plane[1] * cosf(game->player->angle)));
-	}
+		move_ad(game, -0.2);
 	if (keycode == 100)
-	{
-		game->player->angle = 0.2;
-		old_dir = game->player->dir[0];
-		old_dir_plane = game->player->dir_plane[0];
-		// Modifie la direction du vecteur de -0.1 degré en appliquant une formule
-		game->player->dir[0] = (game->player->dir[0] * cosf(game->player->angle)) - (game->player->dir[1] * sinf(game->player->angle));
-		game->player->dir[1] = (old_dir * sinf(game->player->angle) + (game->player->dir[1] * cosf(game->player->angle)));
-		game->player->dir_plane[0] = (game->player->dir_plane[0] * cosf(game->player->angle)) - (game->player->dir_plane[1] * sinf(game->player->angle));
-		game->player->dir_plane[1] = (old_dir_plane * sinf(game->player->angle) + (game->player->dir_plane[1] * cosf(game->player->angle)));
-	}
+		move_ad(game, 0.2);
+	if (keycode == 65361)
+		turn_camera(game, -0.2);
+	if (keycode == 65363)
+		turn_camera(game, 0.2);
 	display_frame(*game);
 	return (0);
 }

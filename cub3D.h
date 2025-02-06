@@ -61,7 +61,6 @@ typedef struct  s_player {
 	double pos_y;
 	double dir[2];
 	double dir_plane[2];
-	double angle;
 }               t_player;
 
 typedef struct	s_vars {
@@ -134,7 +133,6 @@ void	ft_exit_err(char *file, char *str, int ex);
 // Display functions !
 
 void	draw_line(t_frame frame, double x0, double y0, double x1, double y1);
-void	draw_square(int x, int y, int sizex, int sizey, int color, t_frame frame);
 void	draw_player(t_player player, t_frame frame);
 void	display_frame(t_game game);
 void	draw_stripe(t_game game, t_ray ray, int draw_start, int draw_end);

@@ -12,32 +12,9 @@
 
 #include "cub3D.h"
 
-void	draw_line(t_frame frame, double x0, double y0, double x1, double y1)
+uint	get_pixel_img(t_frame *data, int x, int y)
 {
-	double	dx;
-	double	dy;
-	double	x;
-	double	y;
-	int		step;
-	int		i;
-
-	dx = x1 - x0;
-	dy = y1 - y0;
-	x = x0;
-	y = y0;
-	i = -1;
-	step = (int)fmax(fabs(dx), fabs(dy));
-	while (++i < step)
-	{
-		x += dx / step;
-		y += dy / step;
-		my_mlx_pixel_put(&frame, x, y, 0xFF0000);
-	}
-}
-
-uint get_pixel_img(t_frame *data, int x, int y)
-{
-	char *dst;
+	char	*dst;
 
 	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
 	return (*(unsigned int *)dst);
@@ -48,7 +25,7 @@ int	get_wall(t_ray ray)
 	if (ray.side == 0)
 	{
 		if (ray.ray_x > 0)
-			return(2);
+			return (2);
 		else
 			return (3);
 	}
@@ -63,9 +40,9 @@ int	get_wall(t_ray ray)
 
 void	draw_stripe(t_game game, t_ray ray, int draw_start, int draw_end)
 {
-	int	y;
-	int	wall_text;
-	int	color;
+	int		y;
+	int		wall_text;
+	int		color;
 	double	step;
 	double	text_y;
 
@@ -75,45 +52,58 @@ void	draw_stripe(t_game game, t_ray ray, int draw_start, int draw_end)
 	y = draw_start;
 	while (y <= draw_end)
 	{
-		color = get_pixel_img(game.textures[wall_text], ray.text_x, (int)text_y);
+		color = get_pixel_img(game.textures[wall_text],
+				ray.text_x, (int)text_y);
 		my_mlx_pixel_put(game.frame, ray.screen_x, y, color);
 		text_y += step;
 		y++;
 	}
 }
 
-void	draw_square(int x, int y, int sizex, int sizey, int color, t_frame frame)
+void	draw_ceiling(t_frame frame, int color)
 {
-	int	i;
-	int	j;
+	int	size_height;
+	int	x;
+	int	y;
 
-	i = y;
-	while (i < y + sizey)
+	size_height = ScreenHeight / 2;
+	y = 0;
+	while (y < size_height)
 	{
-		j = x;
-		while (j < x + sizex)
+		x = 0;
+		while (x < ScreenWidth)
 		{
-			my_mlx_pixel_put(&frame, j, i, color);
-			j++;
+			my_mlx_pixel_put(&frame, x, y, color);
+			x++;
 		}
-		i++;
+		y++;
 	}
 }
 
-void	draw_player(t_player player, t_frame frame)
+void	draw_floor(t_frame frame, int color)
 {
-	draw_square((player.pos_x) * 50, (player.pos_y) * 50, 5, 5, 0x7ac417, frame);
+	int	size_height;
+	int	x;
+	int	y;
+
+	size_height = ScreenHeight;
+	y = ScreenHeight / 2;
+	while (y < size_height)
+	{
+		x = 0;
+		while (x < ScreenWidth)
+		{
+			my_mlx_pixel_put(&frame, x, y, color);
+			x++;
+		}
+		y++;
+	}
 }
 
 void	display_frame(t_game game)
 {
-	int sw;
-	int sh;
-
-	sw = ScreenWidth;
-	sh = ScreenHeight;
-	draw_square(0, 0, sw, sh / 2, game.data.c_clr, *game.frame);
-	draw_square(0, sh / 2, sw, sh / 2, game.data.f_clr, *game.frame);
+	draw_ceiling(*game.frame, game.data.c_clr);
+	draw_floor(*game.frame, game.data.f_clr);
 	raycasting(game);
 	mlx_put_image_to_window(game.mlx, game.win, game.frame->img, 0, 0);
 }

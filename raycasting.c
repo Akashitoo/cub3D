@@ -42,38 +42,6 @@ void	init_ray(t_ray *ray, t_player player, double ray_x, double ray_y)
 	}
 }
 
-void	draw_ray(t_ray ray, t_player player, t_frame frame)
-{
-	double	wall_hit_pos;
-	double	pos_x;
-	double	pos_y;
-	int		map_x;
-	int		map_y;
-
-	pos_x = player.pos_x;
-	pos_y = player.pos_y;
-	map_x = ray.map_x;
-	map_y = ray.map_y;
-	if (ray.side == 0)
-	{
-		if (ray.step_x < 0)
-			map_x -= ray.step_x;
-		wall_hit_pos = (ray.ray_y / ray.ray_x)
-			* (fabs(map_x - pos_x) * ray.step_x);
-		draw_line(frame, pos_x * 50, pos_y * 50,
-			map_x * 50, (pos_y + wall_hit_pos) * 50);
-	}
-	else
-	{
-		if (ray.step_y < 0)
-			map_y -= ray.step_y;
-		wall_hit_pos = (ray.ray_x / ray.ray_y)
-			* (fabs(map_y - pos_y) * ray.step_y);
-		draw_line(frame, pos_x * 50, pos_y * 50,
-			(pos_x + wall_hit_pos) * 50, map_y * 50);
-	}
-}
-
 t_ray	calculate_ray(t_player player, char **map, double ray_x, double ray_y)
 {
 	t_ray	ray;
@@ -99,20 +67,6 @@ t_ray	calculate_ray(t_player player, char **map, double ray_x, double ray_y)
 			hit = 1;
 	}
 	return (ray);
-}
-
-int	get_color_wall(t_game game, t_ray ray)
-{
-	if (!ray.side && ray.ray_x > 0)
-		return (0xc70050);
-	if (!ray.side && ray.ray_x < 0)
-		return (0xc70050);
-	if (ray.side && ray.ray_y > 0)
-		return (0x18184d);
-	if (ray.side && ray.ray_y < 0)
-		return (0x18184d);
-	(void)game;
-	return (0);
 }
 
 void	texture_x(t_ray *ray, t_game game)

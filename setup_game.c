@@ -72,7 +72,7 @@ void init_textures(t_game *game)
 		if (!texture)
 		{
 			ft_clear_all(game, NULL);
-			exit(0);
+			exit(0);	
 		}
 		if (i == 0)
 			path = game->data.no_path;
@@ -82,7 +82,6 @@ void init_textures(t_game *game)
 			path = game->data.ea_path;
 		else if (i == 3)
 			path = game->data.we_path;
-		printf("%s\n", path);
 		texture->img = mlx_xpm_file_to_image(game->mlx, path, &width, &height);
 		texture->addr = mlx_get_data_addr(texture->img, &texture->bits_per_pixel, &texture->line_length, &texture->endian);
 		game->textures[i] = texture;
