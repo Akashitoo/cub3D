@@ -47,17 +47,17 @@ int	get_wall(t_ray ray)
 {
 	if (ray.side == 0)
 	{
-		if (ray.ray_x < 0)
-			return(0);
+		if (ray.ray_x > 0)
+			return(2);
 		else
-			return (1);
+			return (3);
 	}
 	else
 	{
-		if (ray.ray_y > 0)
-			return (2);
+		if (ray.ray_y < 0)
+			return (0);
 		else
-			return (3);
+			return (1);
 	}
 }
 
