@@ -30,6 +30,39 @@ void	ft_init_data(t_game *game)
 	game->data.c_nb = 0;
 	game->data.f_nb = 0;
 }
+
+void	init_dir(t_player *player, char c)
+{
+	if (c == 'N')
+	{
+		player->dir[0] = 0;
+		player->dir[1] = -1;
+		player->dir_plane[0] = 0.66;
+		player->dir_plane[1] = 0;	
+	}
+	else if (c == 'S')
+	{
+		player->dir[0] = 0;
+		player->dir[1] = 1;
+		player->dir_plane[0] = -0.66;
+		player->dir_plane[1] = 0;
+	}
+	else if (c == 'E')
+	{
+		player->dir[0] = 1;
+		player->dir[1] = 0;
+		player->dir_plane[0] = 0;
+		player->dir_plane[1] = 0.66;
+	}
+	else if (c == 'W')
+	{
+		player->dir[0] = -1;
+		player->dir[1] = 0;
+		player->dir_plane[0] = 0;
+		player->dir_plane[1] = -0.66;
+	}
+}
+
 void init_player(t_player *player, char **map)
 {
 	int	y;
@@ -43,12 +76,9 @@ void init_player(t_player *player, char **map)
 		{
 			if (map[y][x] == 'N' || map[y][x] == 'S' || map[y][x] == 'W' || map[y][x] == 'E' )
 			{
-				player->pos_x = x+0.1;
-				player->pos_y = y+0.1;
-				player->dir[0] = 0;
-				player->dir[1] = -1;
-				player->dir_plane[0] = 0.66;
-				player->dir_plane[1] = 0;
+				player->pos_x = x+0.5;
+				player->pos_y = y+0.5;
+				init_dir(player, map[y][x]);
 			}
 			x++;
 		}
@@ -72,7 +102,7 @@ void init_textures(t_game *game)
 		if (!texture)
 		{
 			ft_clear_all(game, NULL);
-			exit(0);	
+			exit(0);
 		}
 		if (i == 0)
 			path = game->data.no_path;

@@ -24,8 +24,8 @@
 # include <fcntl.h>
 
 # define BUFF_SIZE 2048
-# define ScreenWidth 800
-# define ScreenHeight 600
+# define ScreenWidth 1000
+# define ScreenHeight 750
 # define TextWidth 1000
 # define TextHeight 1000
 

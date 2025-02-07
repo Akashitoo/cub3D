@@ -67,13 +67,13 @@ void	move_ad(t_game *game, double step)
 int	key_press(int keycode, t_game *game)
 {
 	if (keycode == 119)
-		move_ws(game, 0.2);
+		move_ws(game, 0.1);
 	if (keycode == 115)
-		move_ws(game, -0.2);
+		move_ws(game, -0.1);
 	if (keycode == 97)
-		move_ad(game, -0.2);
+		move_ad(game, -0.1);
 	if (keycode == 100)
-		move_ad(game, 0.2);
+		move_ad(game, 0.1);
 	if (keycode == 65361)
 		turn_camera(game, -0.2);
 	if (keycode == 65363)

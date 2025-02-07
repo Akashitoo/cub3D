@@ -21,26 +21,6 @@ void	my_mlx_pixel_put(t_frame *data, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-void	init_map(t_vars *vars, int map[10][10])
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	vars->map = malloc(sizeof(int *) * 10);
-	while (i < 10)
-	{
-		j = 0;
-		vars->map[i] = malloc(sizeof(int) * 10);
-		while (j < 10)
-		{
-			vars->map[i][j] = map[i][j];
-			j++;
-		}
-		i++;
-	}
-}
-
 int	main(int ac, char **av)
 {
 	if (ac == 2)
