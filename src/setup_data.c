@@ -6,7 +6,7 @@
 /*   By: mqwa <mqwa@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 22:43:28 by mqwa              #+#    #+#             */
-/*   Updated: 2025/01/22 10:30:35 by mqwa             ###   ########.fr       */
+/*   Updated: 2025/02/08 22:54:14 by mqwa             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 static int	ft_get_path(t_game *game, char *buf, char *str)
 {
 	if (!ft_strcmp(buf, "NO") && !game->data.no_nb)
-		game->data.no_path = ft_fill_path(game, str, &game->data.no_nb);
+		game->data.no_p = ft_fill_path(game, str, &game->data.no_nb);
 	else if (!ft_strcmp(buf, "SO") && !game->data.so_nb)
-		game->data.so_path = ft_fill_path(game, str, &game->data.so_nb);
+		game->data.so_p = ft_fill_path(game, str, &game->data.so_nb);
 	else if (!ft_strcmp(buf, "WE") && !game->data.we_nb)
-		game->data.we_path = ft_fill_path(game, str, &game->data.we_nb);
+		game->data.we_p = ft_fill_path(game, str, &game->data.we_nb);
 	else if (!ft_strcmp(buf, "EA") && !game->data.ea_nb)
-		game->data.ea_path = ft_fill_path(game, str, &game->data.ea_nb);
+		game->data.ea_p = ft_fill_path(game, str, &game->data.ea_nb);
 	else if (!ft_strcmp(buf, "F") && !game->data.f_nb)
 		game->data.f_clr = ft_fill_color(str, &game->data.f_nb);
 	else if (!ft_strcmp(buf, "C") && !game->data.c_nb)

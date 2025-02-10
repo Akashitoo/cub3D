@@ -3,22 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   display2D.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abalasub <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mqwa <mqwa@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:27:48 by abalasub          #+#    #+#             */
-/*   Updated: 2025/01/21 16:27:50 by abalasub         ###   ########.fr       */
+/*   Updated: 2025/02/09 03:08:33 by mqwa             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
-
-uint	get_pixel_img(t_frame *data, int x, int y)
-{
-	char	*dst;
-
-	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-	return (*(unsigned int *)dst);
-}
 
 int	get_wall(t_ray ray)
 {
@@ -47,8 +39,8 @@ void	draw_stripe(t_game game, t_ray ray, int draw_start, int draw_end)
 	double	text_y;
 
 	wall_text = get_wall(ray);
-	step = 1.0 * TextHeight / ray.line_height;
-	text_y = (draw_start - ScreenHeight / 2 + ray.line_height / 2) * step;
+	step = 1.0 * TEXTHEIGHT / ray.line_height;
+	text_y = (draw_start - SCREENHEIGHT / 2 + ray.line_height / 2) * step;
 	y = draw_start;
 	while (y <= draw_end)
 	{
@@ -66,12 +58,12 @@ void	draw_ceiling(t_frame frame, int color)
 	int	x;
 	int	y;
 
-	size_height = ScreenHeight / 2;
+	size_height = SCREENHEIGHT / 2;
 	y = 0;
 	while (y < size_height)
 	{
 		x = 0;
-		while (x < ScreenWidth)
+		while (x < SCREENWIDTH)
 		{
 			my_mlx_pixel_put(&frame, x, y, color);
 			x++;
@@ -86,12 +78,12 @@ void	draw_floor(t_frame frame, int color)
 	int	x;
 	int	y;
 
-	size_height = ScreenHeight;
-	y = ScreenHeight / 2;
+	size_height = SCREENHEIGHT;
+	y = SCREENHEIGHT / 2;
 	while (y < size_height)
 	{
 		x = 0;
-		while (x < ScreenWidth)
+		while (x < SCREENWIDTH)
 		{
 			my_mlx_pixel_put(&frame, x, y, color);
 			x++;

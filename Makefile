@@ -3,15 +3,34 @@ NAME = cub3D
 CC = cc
 
 CFLAGS = -Wall -Werror -Wextra -O3
+CFLAGS += -I./include/
 
 MLXFLAGS = -L ./minilibx-linux -lmlx -Ilmlx -lXext -lX11 -lm
 LIBFT = ./libft/libft.a
 
-SRC = main.c display2D.c event.c raycasting.c \
-		check_arg.c check_map.c clear_exit.c create_map.c \
-		create_tab.c ft_check_color.c ft_check_empty.c ft_isspace.c \
-		read_file.c setup_data.c setup_game.c setup_path_color.c \
-		ft_isstart.c ft_strdup_max.c ft_strcmp.c \
+SRC =	./src/main.c
+SRC +=	./src/display2D.c 
+SRC +=	./src/event.c 
+SRC +=	./src/raycasting.c
+SRC +=	./src/raycasting_tools.c
+SRC +=	./src/check_arg.c 
+SRC +=	./src/check_map.c 
+SRC +=	./src/clear_exit.c
+SRC +=	./src/create_map.c 
+SRC +=	./src/create_tab.c 
+SRC +=	./src/ft_check_color.c 
+SRC +=	./src/ft_check_empty.c
+SRC +=	./src/ft_isspace.c 
+SRC +=	./src/read_file.c 
+SRC +=	./src/setup_data.c
+SRC +=	./src/setup_game.c 
+SRC +=	./src/setup_path_color.c 
+SRC +=	./src/ft_isstart.c 
+SRC +=	./src/ft_strdup_max.c
+SRC +=	./src/ft_strcmp.c 
+SRC +=	./src/exit_game.c 
+SRC +=	./src/start_game.c
+SRC +=	./src/pixel.c
 
 OBJS = $(SRC:.c=.o)
 

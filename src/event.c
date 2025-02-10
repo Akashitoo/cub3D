@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   event.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abalasub <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mqwa <mqwa@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 17:16:51 by abalasub          #+#    #+#             */
-/*   Updated: 2025/01/21 17:17:07 by abalasub         ###   ########.fr       */
+/*   Updated: 2025/02/09 03:43:46 by mqwa             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,17 +67,19 @@ void	move_ad(t_game *game, double step)
 int	key_press(int keycode, t_game *game)
 {
 	if (keycode == 119)
-		move_ws(game, 0.1);
+		move_ws(game, 0.2);
 	if (keycode == 115)
-		move_ws(game, -0.1);
+		move_ws(game, -0.2);
 	if (keycode == 97)
-		move_ad(game, -0.1);
+		move_ad(game, -0.2);
 	if (keycode == 100)
-		move_ad(game, 0.1);
+		move_ad(game, 0.2);
 	if (keycode == 65361)
 		turn_camera(game, -0.2);
 	if (keycode == 65363)
 		turn_camera(game, 0.2);
+	if (keycode == ESC)
+		ft_clear_all(game, "Thanks you for playing !\n", 0, 4);
 	display_frame(*game);
 	return (0);
 }
