@@ -1,4 +1,4 @@
-#--- CUB3D ---
+# CUB3D
 
 Projet 42 realisé avec @mqwa78
 
