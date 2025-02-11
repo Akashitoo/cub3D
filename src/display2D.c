@@ -39,7 +39,7 @@ void	draw_stripe(t_game game, t_ray ray, int draw_start, int draw_end)
 	double	text_y;
 
 	wall_text = get_wall(ray);
-	step = 1.0 * TEXTHEIGHT / ray.line_height;
+	step = 1.0 * game.textures[wall_text]->height / ray.line_height;
 	text_y = (draw_start - SCREENHEIGHT / 2 + ray.line_height / 2) * step;
 	y = draw_start;
 	while (y <= draw_end)
@@ -58,9 +58,9 @@ void	draw_ceiling(t_frame frame, int color)
 	int	x;
 	int	y;
 
-	size_height = SCREENHEIGHT / 2;
+	size_height = SCREENHEIGHT;
 	y = 0;
-	while (y < size_height)
+	while (y < size_height / 2)
 	{
 		x = 0;
 		while (x < SCREENWIDTH)

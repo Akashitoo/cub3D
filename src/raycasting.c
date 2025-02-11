@@ -66,10 +66,12 @@ t_ray	calculate_ray(t_player player, char **map, double ray_x, double ray_y)
 
 void	texture_x(t_ray *ray, t_game game)
 {
+	int		wall_text;
 	double	wall_hit_x;
 	double	pos_x;
 	double	pos_y;
 
+	wall_text = get_wall(*ray);
 	pos_x = game.player->pos_x;
 	pos_y = game.player->pos_y;
 	if (ray->side == 0)
@@ -77,8 +79,7 @@ void	texture_x(t_ray *ray, t_game game)
 	else
 		wall_hit_x = pos_x + ((ray->side_y - ray->delta_y) * ray->ray_x);
 	wall_hit_x -= (int)wall_hit_x;
-	ray->text_x = (int)(wall_hit_x * (double)TEXTWIDTH);
-	ray->text_x = TEXTWIDTH - ray->text_x - 1;
+	ray->text_x = (int)(wall_hit_x * (double)game.textures[wall_text]->width);
 }
 
 void	display_stripe(t_ray ray, t_game game)

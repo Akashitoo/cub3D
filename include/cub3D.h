@@ -56,6 +56,8 @@ typedef struct s_frame
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
+	int		width;
+	int		height;
 }				t_frame;
 
 typedef struct s_player
@@ -137,6 +139,7 @@ void	my_mlx_pixel_put(t_frame *data, int x, int y, int color);
 
 // Divers
 
+int		get_wall(t_ray ray);
 void	raycasting(t_game game);
 void	ft_ray_tools(t_ray *ray, t_player player, double ray_x, double ray_y);
 uint	get_pixel_img(t_frame *data, int x, int y);

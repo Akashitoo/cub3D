@@ -28,8 +28,6 @@ static char	*ft_get_path(t_game *game, int index)
 static void	init_textures(t_game *game)
 {
 	int		i;
-	int		width;
-	int		height;
 	t_frame	*text;
 	char	*path;
 
@@ -42,12 +40,14 @@ static void	init_textures(t_game *game)
 		path = ft_get_path(game, i);
 		if (!path)
 			ft_clear_all(game, "Malloc error\n", 1, i);
-		text->img = mlx_xpm_file_to_image(game->mlx, path, &width, &height);
+		text->img = mlx_xpm_file_to_image(game->mlx, path,
+				&text->width, &text->height);
+		printf("width : %d height : %d\n", text->width, text->height);
 		if (!text->img)
 		{
 			free(text);
 			ft_clear_all(game, "MinilibX img error\n", 1, i);
-		}
+		}		
 		text->addr = mlx_get_data_addr(text->img, &text->bits_per_pixel,
 				&text->line_length, &text->endian);
 		game->textures[i] = text;
