@@ -12,9 +12,17 @@
 
 #include "cub3D.h"
 
-int	check_collision(t_game *game, double pos_x, double pos_y)
+int	check_collision(t_game *game, double stepx, double stepy)
 {
-	if (game->data.map[(int)pos_y][(int)pos_x] == '1')
+	double	pos_x;
+	double	pos_y;
+
+	pos_x = game->player->pos_x;
+	pos_y = game ->player->pos_y;
+	if (game->data.map[(int)pos_y][(int)(pos_x + stepx)] == '1'
+			|| game->data.map[(int)(pos_y + stepy)][(int)pos_x] == '1')
+		return (1);
+	else if (game->data.map[(int)(pos_y + stepy)][(int)(pos_x + stepx)] == '1')
 		return (1);
 	return (0);
 }
@@ -38,29 +46,29 @@ void	turn_camera(t_game *game, double angle)
 
 void	move_ws(t_game *game, double step)
 {
-	double	next_pos_x;
-	double	next_pos_y;
+	double	stepx;
+	double	stepy;
 
-	next_pos_x = game->player->pos_x + (game->player->dir[0] * step);
-	next_pos_y = game->player->pos_y + (game->player->dir[1] * step);
-	if (!check_collision(game, next_pos_x, next_pos_y))
+	stepx = game->player->dir[0] * step;
+	stepy = game->player->dir[1] * step;
+	if (!check_collision(game, stepx, stepy))
 	{
-		game->player->pos_x = next_pos_x;
-		game->player->pos_y = next_pos_y;
+		game->player->pos_x += stepx;
+		game->player->pos_y += stepy;
 	}
 }
 
 void	move_ad(t_game *game, double step)
 {
-	double	next_pos_x;
-	double	next_pos_y;
+	double	stepx;
+	double	stepy;
 
-	next_pos_x = game->player->pos_x + (game->player->dir_plane[0] * step);
-	next_pos_y = game->player->pos_y + (game->player->dir_plane[1] * step);
-	if (!check_collision(game, next_pos_x, next_pos_y))
+	stepx = (game->player->dir_plane[0] * step);
+	stepy = (game->player->dir_plane[1] * step);
+	if (!check_collision(game, stepx, stepy))
 	{
-		game->player->pos_x = next_pos_x;
-		game->player->pos_y = next_pos_y;
+		game->player->pos_x += stepx;
+		game->player->pos_y += stepy;
 	}
 }
 

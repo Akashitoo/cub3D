@@ -42,7 +42,6 @@ static void	init_textures(t_game *game)
 			ft_clear_all(game, "Malloc error\n", 1, i);
 		text->img = mlx_xpm_file_to_image(game->mlx, path,
 				&text->width, &text->height);
-		printf("width : %d height : %d\n", text->width, text->height);
 		if (!text->img)
 		{
 			free(text);
@@ -125,7 +124,7 @@ int	start_game(t_game game)
 	init_textures(&game);
 	display_frame(game);
 	mlx_key_hook(game.win, key_press, &game);
-	mlx_hook(game.win, 17, 0, exit_game, &game);
+	mlx_hook(game.win, 17, 3, exit_game, &game);
 	mlx_loop(game.mlx);
 	return (1);
 }
