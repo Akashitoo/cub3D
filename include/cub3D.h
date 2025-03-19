@@ -23,6 +23,8 @@
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <fcntl.h>
+# include <X11/X.h>
+# include <X11/keysym.h>
 
 # define BUFF_SIZE 2048
 # define SCREENWIDTH 800
@@ -95,6 +97,13 @@ typedef struct s_game
 	t_frame		*textures[4];
 	void		*mlx;
 	void		*win;
+	int		w;
+	int		a;
+	int		s;
+	int		d;
+	int		l;
+	int		r;
+	int		q;
 }				t_game;
 
 //			CUB3D
@@ -147,4 +156,6 @@ uint	get_pixel_img(t_frame *data, int x, int y);
 // Event
 
 int		key_press(int keycode, t_game *vars);
+int		key_release(int keycode, t_game *game);
+int		move(t_game *game);
 #endif

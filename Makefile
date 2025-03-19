@@ -42,9 +42,11 @@ $(NAME):$(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(MLXFLAGS) -o $(NAME)
 
 clean:
+	$(MAKE) -C ./libft clean
 	rm -rf $(OBJS)
 
 fclean: clean
+	$(MAKE) -C ./libft fclean
 	rm -rf $(NAME)
 
 re: fclean all

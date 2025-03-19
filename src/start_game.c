@@ -102,6 +102,14 @@ static void	init_player(t_player *player, char **m)
 	}
 }
 
+int	looping(t_game *game)
+{
+	move(game);
+	display_frame(*game);
+	return (0);
+}
+
+
 int	start_game(t_game game)
 {
 	t_frame		frame;
@@ -121,10 +129,19 @@ int	start_game(t_game game)
 			&frame.line_length, &frame.endian);
 	game.frame = &frame;
 	game.player = &player;
+	game.w = 0;
+	game.a = 0;
+	game.s = 0;
+	game.d = 0;
+	game.l = 0;
+	game.r = 0;
+	game.q = 0;
 	init_textures(&game);
 	display_frame(game);
-	mlx_key_hook(game.win, key_press, &game);
+	mlx_hook(game.win, KeyPress, 1L << 0, &key_press, &game);
+	mlx_hook(game.win, KeyRelease, 1L << 0, &key_release, &game);
 	mlx_hook(game.win, 17, 3, exit_game, &game);
+	mlx_loop_hook(game.mlx, looping, &game);
 	mlx_loop(game.mlx);
 	return (1);
 }
